@@ -1,0 +1,32 @@
+{
+  "name": "37-1st-wepleats-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wecode-bootcamp-korea/37-1st-WePleats-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wecode-bootcamp-korea/37-1st-WePleats-backend/issues"
+  },
+  "homepage": "https://github.com/wecode-bootcamp-korea/37-1st-WePleats-backend#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
+    "typeorm": "^0.3.9"
+  }
+}
