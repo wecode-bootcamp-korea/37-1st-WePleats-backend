@@ -23,7 +23,7 @@ const validateEmail = (email) => {
     }
 }
 
-const signUp = async (name, email, password, birthday, phone_number, address, sex, profile_image) => {
+const signUp = async (name, email, password, birthday, phone_number, address, gender, profile_image) => {
         validateEmail(email)
         validatePassword(password)
 
@@ -36,7 +36,7 @@ const signUp = async (name, email, password, birthday, phone_number, address, se
             birthday,
             phone_number,
             address,
-            sex,
+            gender,
             profile_image
         );
 }
