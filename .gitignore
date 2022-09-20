@@ -7,3 +7,5 @@ db/schema.sql
 .vscode
 
 /uploads
+
+/config
