@@ -1,8 +1,8 @@
-const dataSource = require('../util/orm')
+const appDataSource = require('./dataSource')
 const userDao = require('./userDao')
 
 
 module.exports = {
-    dataSource,
+    appDataSource,
     userDao
 }

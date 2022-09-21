@@ -1,7 +1,7 @@
-const dataSource = require('../util/orm')
+const appDataSource = require('./dataSource')
 
 const createUser = async (name, email, password, birthday, phone_number, address, gender, profile_image) => {
-    const result = await dataSource.query(`
+    const result = await appDataSource.query(`
     INSERT INTO users (
         name,
         email,
