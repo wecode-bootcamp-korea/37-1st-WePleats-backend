@@ -1,31 +1,13 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const validate = require('../util/validate');
 
 const { userDao } = require('../models');
 
-const validatePassword = (password) => {
-    const passwordCondition =/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-
-    if (!passwordCondition.test(password)) {
-        const error = new Error('INVALID_PASSWORD')
-        error.statusCode = 400
-        throw error
-    }
-}
-
-const validateEmail = (email) => {
-    const emailCondition =/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
-    
-    if (!emailCondition.test(email)) {
-        const error = new Error('INVALID_EMAIL')
-        error.statusCode = 400
-        throw error
-    }
-}
-
 const signUp = async (name, email, password, birthday, phone_number, address, gender, profile_image) => {
-        validateEmail(email)
-        validatePassword(password)
+        validate.validateEmail(email)
+        validate.validatePassword(password)
+        validate.validatePhone(phone_number)
 
         const hashPassword = await bcrypt.hash(password, 10)
 
@@ -41,7 +23,27 @@ const signUp = async (name, email, password, birthday, phone_number, address, ge
         );
 }
 
+const signIn = async (email, password) => {
+    validate.validateEmail(email)
+    validate.validatePassword(password)
+
+    const user = await userDao.getUserByEmail(email)
+
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
+        const err = new Error('비밀번호가 일치하지 않습니다.')
+        err.statusCode = 401
+
+        throw err
+    }
+
+    const accessToken = jwt.sign({ user_id: user.id }, process.env.JWT_KEY);
+    return accessToken;
+}
+
 module.exports = {
-    signUp
+    signUp,
+    signIn
 }
 
