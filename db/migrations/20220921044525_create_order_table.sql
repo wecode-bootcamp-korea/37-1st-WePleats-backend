@@ -4,7 +4,7 @@ CREATE TABLE orders(
     user_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT NOT NULL,
-    price DECIMAL NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
     order_list INT NOT NULL,
     order_status INT NOT NULL,
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
