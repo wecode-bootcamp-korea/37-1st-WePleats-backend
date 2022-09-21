@@ -1,24 +1,7 @@
-const dataSource = require('../util/orm')
-
-const createUser = async (name, email, password, birthday, phone_number, address, gender, profile_image) => {
-    const result = await dataSource.query(`
-    INSERT INTO users (
-        name,
-        email,
-        password,
-        birthday,
-        phone_number,
-        address,
-        gender,
-        profile_image
-    ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [name, email, password, birthday, phone_number, address, gender, profile_image]
-    )
-    return result.insertId
-}
+const appDataSource = require('./dataSource')
 
 const getUserByEmail = async (email) => {
-    const [user] = await dataSource.query(`
+    const [user] = await appDataSource.query(`
     SELECT
         id,
         name,
@@ -32,7 +15,7 @@ const getUserByEmail = async (email) => {
 }
 
 const getUserById = async (id) => {
-    const result = await dataSource.query(`
+    const result = await appDataSource.query(`
     SELECT
         id,
         name,
@@ -46,7 +29,6 @@ const getUserById = async (id) => {
 }
 
 module.exports = {
-    createUser,
     getUserByEmail,
     getUserById
 }

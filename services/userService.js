@@ -4,25 +4,6 @@ const validate = require('../util/validate');
 
 const { userDao } = require('../models');
 
-const signUp = async (name, email, password, birthday, phone_number, address, gender, profile_image) => {
-        validate.validateEmail(email)
-        validate.validatePassword(password)
-        validate.validatePhone(phone_number)
-
-        const hashPassword = await bcrypt.hash(password, 10)
-
-        return await userDao.createUser(
-            name,
-            email,
-            hashPassword,
-            birthday,
-            phone_number,
-            address,
-            gender,
-            profile_image
-        );
-}
-
 const signIn = async (email, password) => {
     validate.validateEmail(email)
     validate.validatePassword(password)
@@ -43,7 +24,6 @@ const signIn = async (email, password) => {
 }
 
 module.exports = {
-    signUp,
     signIn
 }
 
