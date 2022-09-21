@@ -1,7 +1,7 @@
 -- migrate:up
-CREATE TABLE grade(
+CREATE TABLE colors(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    grade VARCHAR(50)
+    color VARCHAR(20) NOT NULL
 )
 -- migrate:down
-DROP TABLE grade
+DROP TABLE colors

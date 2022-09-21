@@ -1,7 +1,7 @@
 -- migrate:up
-CREATE TABLE colors(
+CREATE TABLE order_statuses(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    color VARCHAR(100) NOT NULL
+    status VARCHAR(30)
 )
 -- migrate:down
-DROP TABLE colors
+DROP TABLE order_statuses

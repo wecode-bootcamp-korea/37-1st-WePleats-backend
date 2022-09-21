@@ -1,5 +1,5 @@
 -- migrate:up
-CREATE TABLE usecoupons(
+CREATE TABLE user_coupons(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     coupon_id INT NOT NULL,
@@ -8,4 +8,4 @@ CREATE TABLE usecoupons(
     CONSTRAINT coupon_user_ukey UNIQUE (user_id, coupon_id)
 )
 -- migrate:down
-DROP TABLE usecoupons
+DROP TABLE user_coupons

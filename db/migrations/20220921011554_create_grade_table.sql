@@ -1,7 +1,7 @@
 -- migrate:up
-CREATE TABLE orderstatus(
+CREATE TABLE grades(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    status VARCHAR(100)
+    grade VARCHAR(20)
 )
 -- migrate:down
-DROP TABLE orderstatus
+DROP TABLE grades
