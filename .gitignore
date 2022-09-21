@@ -6,6 +6,9 @@ db/schema.sql
 
 .vscode
 
-/uploads
 
 /config
+
+.DS_store
+
+/uploads
