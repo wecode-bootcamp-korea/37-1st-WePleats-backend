@@ -1,4 +1,4 @@
-const appDataSource = require("../util/orm");
+const appDataSource = require("./dataSource");
 
 const getCartToProduct = async ( userId, productId ) => {
     try {
