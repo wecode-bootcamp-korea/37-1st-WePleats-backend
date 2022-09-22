@@ -21,7 +21,8 @@ const getReviewByUserId = async ( userId, productId ) => {
 const getReviewByProduct = async ( productId ) => {
     try {
         const review = await appDataSource.query(
-            `SELETE
+            `SELECT
+                rv.id,
                 users.name,
                 rv.comment,
                 rv.image_url,
