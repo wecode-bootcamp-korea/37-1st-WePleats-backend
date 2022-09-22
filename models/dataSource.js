@@ -16,7 +16,7 @@ appDataSource
     })
     .catch((err) => {
       console.error('Error occurred during Data Source initialization', err);
-     DataSource.destroy();
+     appDataSource.destroy();
     });
 
 module.exports = appDataSource
