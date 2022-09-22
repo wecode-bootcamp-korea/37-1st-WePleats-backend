@@ -1,15 +1,15 @@
-const appDataSource = require("../util/orm");
+const appDataSource = require("./dataSource");
 
-const searchOrder = async ( userId, productId ) => {
+const getOrder = async ( userId, productId ) => {
     try {
-        const [ purchase ] = await appDataSource.query(
+        const [ order ] = await appDataSource.query(
             `SELECT
                 *
             FROM products
             WHERE user_id = ? AND product_id = ?`,
             [ userId, productId ]
         )
-        return purchase;
+        return order;
     } catch (err) {
         const error = new Error(`INVALID_DATA_INPUT`);
         error.statusCode = 500;
@@ -20,5 +20,5 @@ const searchOrder = async ( userId, productId ) => {
 
 
 module.exports = {
-    searchOrder
+    getOrder
 }

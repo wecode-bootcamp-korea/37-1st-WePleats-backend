@@ -1,6 +1,6 @@
-const appDataSource = require("../util/orm");
+const appDataSource = require("./dataSource");
 
-const searchProduct = async ( productId ) => {
+const getProductById = async ( productId ) => {
     try {
         const [ product ] = await appDataSource.query(
             `SELECT
@@ -20,5 +20,5 @@ const searchProduct = async ( productId ) => {
 
 
 module.exports = {
-    searchProduct
+    getProductById
 }

@@ -1,7 +1,7 @@
-const appDataSource = require("../util/orm");
+const appDataSource = require("./dataSource");
 
 
-const searchUserToReview = async ( userId, productId ) => {
+const getReviewByUserId = async ( userId, productId ) => {
     try {
         const [ review ] = await appDataSource.query(
             `SELETE
@@ -18,7 +18,7 @@ const searchUserToReview = async ( userId, productId ) => {
     }
 }
 
-const searchProductToReview = async ( productId ) => {
+const getReviewByProduct = async ( productId ) => {
     try {
         const review = await appDataSource.query(
             `SELETE
@@ -38,7 +38,7 @@ const searchProductToReview = async ( productId ) => {
     }
 }
 
-const searchPhotoReview = async ( productId ) => {
+const getPhotoReviewByProductId = async ( productId ) => {
     try {
         const review = await appDataSource.query(
             `SELETE
@@ -58,7 +58,7 @@ const searchPhotoReview = async ( productId ) => {
     }
 } 
 
-const postReview = async ( userId, productId, comment, image ) => {
+const createReview = async ( userId, productId, comment, image ) => {
     try {
         return await appDataSource.query(
             `INSERT INTO reviews(
@@ -76,7 +76,7 @@ const postReview = async ( userId, productId, comment, image ) => {
     }
 }
 
-const editReview = async ( id, comment, image ) => {
+const updateReview = async ( id, comment, image ) => {
     try {
         return await appDataSource.query(
             `UPDATE reviews SET
@@ -108,10 +108,10 @@ const deleteReview = async ( userId, productId ) => {
 
 
 module.exports = {
-    searchUserToReview,
-    searchProductToReview,
-    searchPhotoReview,
-    postReview,
-    editReview,
+    getReviewByUserId,
+    getReviewByProduct,
+    getPhotoReviewByProductId,
+    createReview,
+    updateReview,
     deleteReview
 }
