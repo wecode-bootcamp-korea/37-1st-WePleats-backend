@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { userDao } = require('../models');
 
 const accessToken = async (req, res, next) => {
     try {
@@ -6,9 +7,13 @@ const accessToken = async (req, res, next) => {
         const access = jwt.verify(token, process.env.TOKKENSECRET);
         const userId = access.user_id;
         req.body.userId = userId;
+        const user = await userDao.getUserById( userId )
+        if ( !user ) {
+            return res.status(403).json({ message: "INVALID_USER"})
+        }
         return next()
     } catch(err) {
-        return res.status(400).json({ message: "잘못된 토큰 입니다."});
+        return res.status(400).json({ message: "INVALID_TOKEN"});
     }
 };
 
