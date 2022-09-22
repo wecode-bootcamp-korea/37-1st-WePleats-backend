@@ -1,6 +1,6 @@
 const appDataSource = require("../util/orm");
 
-const findCartToProduct = async ( userId, productId ) => {
+const getCartToProduct = async ( userId, productId ) => {
     try {
         const [ result ] = await appDataSource.query(
             `SELETE
@@ -17,7 +17,7 @@ const findCartToProduct = async ( userId, productId ) => {
     }
 }
 
-const showCart = async ( userId ) => {
+const getCart = async ( userId ) => {
     try {
         const result = await appDataSource.query(
             `SELECT
@@ -56,7 +56,7 @@ const addCart = async ( userId, productId, quantity ) => {
     }
 }
 
-const editCart = async ( userId, productId, quantity ) => {
+const updateCart = async ( userId, productId, quantity ) => {
     try {
         return await appDataSource.query(
             `UPDATE carts SET
@@ -86,9 +86,9 @@ const deleteCart = async ( userId, productId ) => {
 }
 
 module.exports = {
-    findCartToProduct,
-    showCart,
+    getCartToProduct,
+    getCart,
     addCart,
-    editCart,
+    updateCart,
     deleteCart
 }

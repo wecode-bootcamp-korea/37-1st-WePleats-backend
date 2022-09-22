@@ -10,34 +10,34 @@ const showCart = asyncWrap(async (req, res) => {
 const addCart = asyncWrap(async (req, res) => {
     const { userId, productId, quantity } = req.body;
     if ( !productId || !quantity ) {
-        const err = new Error("제품ID와 수량은 필수 값 입니다.");
+        const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
     }
     await cartService.addCart( userId, productId, quantity );
-    return res.status(201).json({ message: "장바구니 추가"})
+    return res.status(201).json({ message: "Add cart to product Sucess"})
 })
 
 const editCart = asyncWrap(async (req, res) => {
     const { userId, productId, quantity } = req.body;
     if ( !productId || !quantity ) {
-        const err = new Error("제품ID와 수량은 필수 값 입니다.");
+        const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
     }
     await cartService.editCart( userId, productId, quantity );
-    return res.status(200).json({ message: "장바구니 수정"})
+    return res.status(200).json({ message: "Edit cart to product Sucess"})
 })
 
 const deleteCart = asyncWrap(async (req, res) => {
     const { userId, productId } = req.body;
     if ( !productId || !quantity ) {
-        const err = new Error("제품ID는 필수 값 입니다.");
+        const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
     }
     await cartService.deleteCart( userId, productId );
-    return res.status(204).json({ message: "장바구니 물품 삭제"})
+    return res.status(204).json({ message: "Delete cart to product Sucess"})
 })
 
 module.exports = {
