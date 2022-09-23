@@ -30,13 +30,13 @@ const editCart = asyncWrap(async (req, res) => {
 })
 
 const deleteCart = asyncWrap(async (req, res) => {
-    const { userId, productId } = req.body;
-    if ( !productId ) {
+    const { userId, id } = req.body;
+    if ( !id ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
     }
-    await cartService.deleteCart( userId, productId );
+    await cartService.deleteCart( userId, id );
     return res.status(204).json({ message: "Delete cart to product Sucess"})
 })
 

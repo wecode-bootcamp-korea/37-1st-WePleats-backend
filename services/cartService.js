@@ -53,7 +53,8 @@ const deleteCart = async ( userId, productId ) => {
             err.statusCode = 406;
             throw err;
         }
-        await cartDao.deleteCart( userId, el.productId )
+        
+        await cartDao.deleteCart( userId, productId )
     }
     return
 }
