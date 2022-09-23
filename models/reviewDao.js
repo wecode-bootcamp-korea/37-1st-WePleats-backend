@@ -95,6 +95,7 @@ const updateReview = async ( id, comment, image ) => {
 
 const deleteReview = async ( userId, productId ) => {
     try {
+        console.log(userId, productId)
         return await appDataSource.query(
             `DELETE FROM reviews
             WHERE user_id = ? AND product_id = ?`,

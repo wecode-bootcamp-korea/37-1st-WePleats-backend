@@ -3,7 +3,7 @@ const appDataSource = require("./dataSource");
 const getCartToProduct = async ( userId, productId ) => {
     try {
         const [ result ] = await appDataSource.query(
-            `SELETE
+            `SELECT
                 *
             FROM carts
             WHERE user_id = ? AND product_id = ?`,
@@ -11,6 +11,7 @@ const getCartToProduct = async ( userId, productId ) => {
         )
         return result
     } catch (err) {
+        console.log(err)
         const error = new Error(`INVALID_DATA_INPUT`);
         error.statusCode = 500;
         throw error;
@@ -21,7 +22,8 @@ const getCart = async ( userId ) => {
     try {
         const result = await appDataSource.query(
             `SELECT
-                pro.id,
+                carts.id,
+                carts.product_id,
                 pro.name,
                 pro.price,
                 carts.quantity,
@@ -80,6 +82,7 @@ const deleteCart = async ( userId, productId ) => {
             [ userId, productId ]
         )
     } catch (err) {
+        console.log(err)
         const error = new Error(`INVALID_DATA_INPUT`);
         err.statusCode = 500;
         throw error;

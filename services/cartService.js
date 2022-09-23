@@ -46,13 +46,16 @@ const editCart = async ( userId, productId, quantity ) => {
 }
 
 const deleteCart = async ( userId, productId ) => {
-    const cart = await cartDao.getCartToProduct( userId, productId );
-    if( !cart ) {
-        const err = new Error("This product not in Cart");
-        err.statusCode = 406;
-        throw err;
+    for(const el of productId ) {
+        const cart = await cartDao.getCartToProduct( userId, el.productId )
+        if( !cart ) {
+            const err = new Error("This product not in Cart");
+            err.statusCode = 406;
+            throw err;
+        }
+        await cartDao.deleteCart( userId, el.productId )
     }
-    return await cartDao.deleteCart( userId, productId )
+    return
 }
 
 module.exports = {
