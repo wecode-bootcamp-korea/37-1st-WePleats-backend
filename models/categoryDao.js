@@ -18,7 +18,10 @@ const getProductByCategory = async (categoryId) => {
     ON products.category=categorys.id
     INNER JOIN main_categorys
     ON main_categorys.id=categorys.main_category
-    WHERE main_categorys.id=?`, [categoryId]
+    WHERE (
+        CASE WHEN
+            main_category
+    )`, [categoryId]
     )
     
     const getThumbImage = 
