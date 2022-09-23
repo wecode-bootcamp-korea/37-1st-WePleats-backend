@@ -9,7 +9,7 @@ const showCart = asyncWrap(async (req, res) => {
 
 const addCart = asyncWrap(async (req, res) => {
     const { userId, productId, quantity } = req.body;
-    if ( !productId || !quantity ) {
+    if ( !productId ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
