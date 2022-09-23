@@ -9,7 +9,7 @@ const showCart = asyncWrap(async (req, res) => {
 
 const addCart = asyncWrap(async (req, res) => {
     const { userId, productId, quantity } = req.body;
-    if ( !productId ) {
+    if ( !productId || !quantity ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
@@ -31,7 +31,7 @@ const editCart = asyncWrap(async (req, res) => {
 
 const deleteCart = asyncWrap(async (req, res) => {
     const { userId, productId } = req.body;
-    if ( !productId || !quantity ) {
+    if ( !productId ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
