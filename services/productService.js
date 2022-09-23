@@ -10,7 +10,7 @@ const detailProduct = async ( productId ) => {
     const detailProduct = await productDao.getProductDetail( productId );
     const productReview = await reviewDao.getReviewByProduct( productId );
     const productImage = await productDao.getProductImage( productId );
-    detailProduct.image = productImage
+    detailProduct.image_url = productImage
     return [ detailProduct, productReview ]
 }
 
