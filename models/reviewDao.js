@@ -1,5 +1,24 @@
 const appDataSource = require("./dataSource");
 
+const getReview = async ( productId ) => {
+    try {
+        return await appDataSource.query(
+            `SELECT
+                id,
+                user_id,
+                comment,
+                image_url,
+                create_at
+            FROM reviews
+            WHERE product_id = ?`,
+            [ productId ]
+        )
+    } catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        error.statusCode = 500;
+        throw error;
+    }
+}
 
 const getReviewByUserId = async ( userId, productId ) => {
     try {
@@ -108,6 +127,7 @@ const deleteReview = async ( userId, productId ) => {
 
 
 module.exports = {
+    getReview,
     getReviewByUserId,
     getReviewByProduct,
     getPhotoReviewByProductId,

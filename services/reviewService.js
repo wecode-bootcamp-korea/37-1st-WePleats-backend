@@ -1,5 +1,16 @@
 const { reviewDao, productDao, orderDao } = require("../models")
 
+const getReview = async (productId) => {
+    const searchProduct = await productDao.getProductById( productId );
+    if (!searchProduct) {
+        const err = new Error("INVALID_PRODUCT");
+        err.statusCode = 406;
+        throw err
+    }
+    const review = await reviewDao.getReview(productId)
+    return review
+}
+
 const postReview = async ( userId, productId, comment, image ) => {
     const searchProduct = await productDao.getProductById( productId );
     if (!searchProduct) {
@@ -49,6 +60,7 @@ const deleteReview = async ( userId, productId ) => {
 }
 
 module.exports = {
+    getReview,
     postReview,
     editReview,
     deleteReview

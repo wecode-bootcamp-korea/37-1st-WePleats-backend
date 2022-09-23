@@ -1,6 +1,17 @@
 const { reviewService } = require("../services");
 const { asyncWrap } = require("../middleware/errorControl")
 
+const getReview = asyncWrap(async (req, res) => {
+    const { productId } = req.body;
+    if (!productId) {
+        const err = new Error("KEY_ERROR");
+        err.statusCode = 400;
+        throw err;
+    }
+    const review = await reviewService.getReview( productId );
+    return res.status(200).json({review: review})
+})
+
 const postReview = asyncWrap(async (req, res) => {
     const { userId, productId, comment } = req.body;
     const image = req.file.location;
@@ -38,6 +49,7 @@ const deleteReview = asyncWrap(async (req, res) => {
 
 
 module.exports = {
+    getReview,
     postReview,
     editReview,
     deleteReview
