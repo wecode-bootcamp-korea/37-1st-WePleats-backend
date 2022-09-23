@@ -3,7 +3,7 @@ const appDataSource = require("./dataSource");
 const getCartToProduct = async ( userId, productId ) => {
     try {
         const [ result ] = await appDataSource.query(
-            `SELETE
+            `SELECT
                 *
             FROM carts
             WHERE user_id = ? AND product_id = ?`,
@@ -25,10 +25,10 @@ const getCart = async ( userId ) => {
                 pro.name,
                 pro.price,
                 carts.quantity,
-                thum.thumnail_url
-            FROM carts INNER JOIN products as pro ON carts.product_id = products.id
-            INNER JOIN thumnail_images as thum ON thum.product_id = products.id
-            WHERE carts.user_id = ?`,
+                thum.thumbnail_url
+            FROM carts INNER JOIN products as pro ON carts.product_id = pro.id
+            INNER JOIN thumbnail_images as thum ON thum.product_id = pro.id
+            WHERE carts.user_id = ? AND thum.thumbnail_main = 1`,
             [ userId ]
         )
         return result

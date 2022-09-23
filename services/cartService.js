@@ -15,8 +15,8 @@ const addCart = async ( userId, productId, quantity ) => {
         err.statusCode = 406;
         throw err;
     }
-
     const cart = await cartDao.getCartToProduct( userId, productId );
+    console.log(cart)
     if ( !cart ) {
         return await cartDao.addCart( userId, productId, quantity );
     } else {

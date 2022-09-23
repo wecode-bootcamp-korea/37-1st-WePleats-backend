@@ -4,7 +4,7 @@ const { userDao } = require('../models');
 const accessToken = async (req, res, next) => {
     try {
         const token = req.headers.authorization;
-        const access = jwt.verify(token, process.env.TOKKENSECRET);
+        const access = jwt.verify(token, process.env.JWT_KEY);
         const userId = access.user_id;
         req.body.userId = userId;
         const user = await userDao.getUserById( userId )
