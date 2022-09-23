@@ -1,7 +1,7 @@
 const dataSource = require('./dataSource')
 
-const getMainCategories = async (categoryId) => {
-    const productInfo = await dataSource.query(`
+const getProductByCategory = async (categoryId) => {
+    const productData = await dataSource.query(`
     SELECT
         products.id,
         products.name,
@@ -12,6 +12,7 @@ const getMainCategories = async (categoryId) => {
         products.create_at,
         main_categorys.main_category
         categorys.sub_category
+        
     FROM products
     INNER JOIN categorys
     ON products.category=categorys.id
@@ -19,6 +20,10 @@ const getMainCategories = async (categoryId) => {
     ON main_categorys.id=categorys.main_category
     WHERE main_categorys.id=?`, [categoryId]
     )
-
+    
     const getThumbImage = 
+}
+
+module.exports = {
+    getProductByCategory
 }
