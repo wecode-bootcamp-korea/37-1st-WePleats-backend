@@ -4,6 +4,9 @@ const showCart = async ( userId ) => {
     const cart = await cartDao.getCart( userId );
     for (const object of cart) {
         object.price = (object.price * object.quantity)
+        object.deliveryfee = 0;
+        if( object.price < 50000)
+        object.deliveryfee = 3000;
     }
     return cart
 }
