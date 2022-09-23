@@ -5,7 +5,7 @@ const getOrder = async ( userId, productId ) => {
         const [ order ] = await appDataSource.query(
             `SELECT
                 *
-            FROM products
+            FROM orders
             WHERE user_id = ? AND product_id = ?`,
             [ userId, productId ]
         )

@@ -1,10 +1,26 @@
 const appDataSource = require("./dataSource");
 
+const getReviewById = async ( userId, reviewId ) => {
+    try {
+        const [ review ] = await appDataSource.query(
+            `SELECT
+                *
+            FROM reviews
+            WHERE user_id = ? AND id = ?`,
+            [ userId, reviewId ]
+        )
+        return review
+    } catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        error.statusCode = 500;
+        throw error;
+    }
+}
 
 const getReviewByUserId = async ( userId, productId ) => {
     try {
         const [ review ] = await appDataSource.query(
-            `SELETE
+            `SELECT
                 *
             FROM reviews
             WHERE user_id = ? AND product_id = ?`,
@@ -42,7 +58,7 @@ const getReviewByProduct = async ( productId ) => {
 const getPhotoReviewByProductId = async ( productId ) => {
     try {
         const review = await appDataSource.query(
-            `SELETE
+            `SELECT
                 users.name,
                 rv.comment,
                 rv.image_url,
@@ -93,12 +109,12 @@ const updateReview = async ( id, comment, image ) => {
     }
 }
 
-const deleteReview = async ( userId, productId ) => {
+const deleteReview = async ( reviewId ) => {
     try {
         return await appDataSource.query(
             `DELETE FROM reviews
-            WHERE user_id = ? AND product_id = ?`,
-            [ userId, productId ]
+            WHERE id = ?`,
+            [ reviewId ]
         )
     } catch (err) {
         const error = new Error(`INVALID_DATA_INPUT`);
@@ -109,6 +125,7 @@ const deleteReview = async ( userId, productId ) => {
 
 
 module.exports = {
+    getReviewById,
     getReviewByUserId,
     getReviewByProduct,
     getPhotoReviewByProductId,
