@@ -2,7 +2,7 @@ const { reviewService } = require("../services");
 const { asyncWrap } = require("../middleware/errorControl")
 
 const getReview = asyncWrap(async (req, res) => {
-    const { productId } = req.body;
+    const { productId } = req.query;
     if (!productId) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
@@ -14,7 +14,7 @@ const getReview = asyncWrap(async (req, res) => {
 
 const postReview = asyncWrap(async (req, res) => {
     const { userId, productId, comment } = req.body;
-    const image = req.file.location;
+    const image = req.file;
     if ( !productId || !comment ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
@@ -26,7 +26,7 @@ const postReview = asyncWrap(async (req, res) => {
 
 const editReview =  asyncWrap(async (req, res) => {
     const { userId, productId, comment } = req.body;
-    const image = req.file.location;
+    const image = req.file;
     if ( !productId || !comment ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;

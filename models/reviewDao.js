@@ -23,7 +23,7 @@ const getReview = async ( productId ) => {
 const getReviewByUserId = async ( userId, productId ) => {
     try {
         const [ review ] = await appDataSource.query(
-            `SELETE
+            `SELECT
                 *
             FROM reviews
             WHERE user_id = ? AND product_id = ?`,
@@ -40,7 +40,7 @@ const getReviewByUserId = async ( userId, productId ) => {
 const getReviewByProduct = async ( productId ) => {
     try {
         const review = await appDataSource.query(
-            `SELETE
+            `SELECT
                 users.name,
                 rv.comment,
                 rv.image_url,
