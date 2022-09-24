@@ -15,7 +15,7 @@ const addCart = asyncWrap(async (req, res) => {
         throw err;
     }
     await cartService.addCart( userId, productId, quantity );
-    return res.status(201).json({ message: "Add cart to product Sucess"})
+    return res.status(201).json({ message: "Add cart to product Success"})
 })
 
 const editCart = asyncWrap(async (req, res) => {
@@ -26,18 +26,18 @@ const editCart = asyncWrap(async (req, res) => {
         throw err;
     }
     await cartService.editCart( userId, productId, quantity );
-    return res.status(200).json({ message: "Edit cart to product Sucess"})
+    return res.status(200).json({ message: "Edit cart to product Success"})
 })
 
 const deleteCart = asyncWrap(async (req, res) => {
-    const { userId, id } = req.body;
-    if ( !id ) {
+    const { userId, productId } = req.body;
+    if ( productId.length == 0 ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
     }
-    await cartService.deleteCart( userId, id );
-    return res.status(204).json({ message: "Delete cart to product Sucess"})
+    await cartService.deleteCart( userId, productId );
+    return res.status(204).json({})
 })
 
 module.exports = {

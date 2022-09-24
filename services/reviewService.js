@@ -1,16 +1,10 @@
-const { reviewDao, productDao, orderDao } = require("../models")
+const { reviewDao, productDao } = require("../models")
 
 const postReview = async ( userId, productId, comment, image ) => {
     const searchProduct = await productDao.getProductById( productId );
     if (!searchProduct) {
         const err = new Error("INVALID_PRODUCT");
         err.statusCode = 406;
-        throw err
-    }
-    const searchOrder = await orderDao.getOrder ( userId, productId );
-    if (!searchOrder) {
-        const err = new Error("Purchased products can be reviewd");
-        err.statusCode = 403;
         throw err
     }
     return await reviewDao.createReview( userId, productId, comment, image );

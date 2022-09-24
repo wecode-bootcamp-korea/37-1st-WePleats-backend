@@ -18,8 +18,7 @@ const addCart = async ( userId, productId, quantity ) => {
         err.statusCode = 406;
         throw err;
     }
-
-    const cart = await cartDao.getCartToProduct( userId, productId );
+    const [ cart ] = await cartDao.getCartToProduct( userId, productId );
     if ( !cart ) {
         return await cartDao.addCart( userId, productId, quantity );
     } else {
@@ -29,34 +28,23 @@ const addCart = async ( userId, productId, quantity ) => {
 }
 
 const editCart = async ( userId, productId, quantity ) => {
-    const product = await productDao.getProductById( productId )
-    if ( !product ) {
-        const err = new Error("INVALID_PRODUCT");
-        err.statusCode = 406;
-        throw err;
-    }
-    const cart = await cartDao.getCartToProduct( userId, productId );
+    const [ cart ] = await cartDao.getCartToProduct( userId, productId );
     if( !cart ) {
-        const err = new Error("This product not in Cart");
+        const err = new Error("This product not in cart");
         err.statusCode = 406;
         throw err;
     }
-    quantity += cart.quantity
     return await cartDao.updateCart( userId, productId, quantity )
 }
 
 const deleteCart = async ( userId, productId ) => {
-    for(const el of productId ) {
-        const cart = await cartDao.getCartToProduct( userId, el.productId )
-        if( !cart ) {
-            const err = new Error("This product not in Cart");
-            err.statusCode = 406;
-            throw err;
-        }
-        
-        await cartDao.deleteCart( userId, productId )
+    const cart = await cartDao.getCartToProduct(userId, productId)
+    if ( productId.length != cart.length ) {
+        const err = new Error("Products is not in cart")
+        err.statusCode = 406;
+        throw err
     }
-    return
+    return await cartDao.deleteCart(userId, productId)
 }
 
 module.exports = {
