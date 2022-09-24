@@ -37,7 +37,8 @@ const deleteCart = asyncWrap(async (req, res) => {
         throw err;
     }
     await cartService.deleteCart( userId, productId );
-    return res.status(204).json({})
+    const result = await cartService.showCart( userId )
+    return res.status(200).json({ cart: result})
 })
 
 module.exports = {
