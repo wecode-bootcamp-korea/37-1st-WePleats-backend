@@ -19,13 +19,12 @@ const addCart = async ( userId, productId, quantity ) => {
         throw err;
     }
     const { cart } = await cartDao.getCartExists( userId, productId );
-    if ( !+cart ) {
-        return await cartDao.addCart( userId, productId, quantity );
-    } else {
+    if ( +cart ) {
         const num = await cartDao.getCartQuantity( userId, productId );
         quantity += num.quantity;
         return await cartDao.updateCart( userId, productId, quantity );
     }
+    return await cartDao.addCart( userId, productId, quantity );
 }
 
 const editCart = async ( userId, productId, quantity ) => {
