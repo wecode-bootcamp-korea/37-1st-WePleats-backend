@@ -1,12 +1,30 @@
 const appDataSource = require("./dataSource");
 
-const getCartToProduct = async ( userId, productId ) => {
+const getCartExists = async ( userId, productId ) => {
     try {
-        const result = await appDataSource.query(
+        const [ result ] = await appDataSource.query(
+            `SELECT EXISTS(
+                SELECT
+                    *
+                FROM carts
+                WHERE user_id = ? AND product_id = ?) AS cart`,
+                [ userId, productId ]
+        )
+        return result
+    } catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        error.statusCode = 500;
+        throw error;
+    }
+}
+
+const getCartQuantity = async ( userId, productId ) => {
+    try {
+        const [ result ] = await appDataSource.query(
             `SELECT
-                *
+                quantity
             FROM carts
-            WHERE user_id = ? AND product_id in (?)`,
+            WHERE user_id = ? AND product_id = ?`,
             [ userId, productId ]
         )
         return result
@@ -17,14 +35,14 @@ const getCartToProduct = async ( userId, productId ) => {
     }
 }
 
-const getCartToId = async ( userId, id ) => {
+const getCartToProduct = async ( userId, productId ) => {
     try {
-        const result = await appDataSource.query(
-            `SELECT
-                id
+        const [ result ] = await appDataSource.query(
+            `SELECT IF(
+                COUNT(*) = ?, 1, NULL) AS cart
             FROM carts
-            WHERE user_id =? AND id in (?) `,
-            [ userId, id ]
+            WHERE user_id = ? AND product_id IN (?)`,
+            [ productId.length, userId, productId ]
         )
         return result
     } catch (err) {
@@ -104,8 +122,9 @@ const deleteCart = async ( userId, productId ) => {
 }
 
 module.exports = {
+    getCartExists,
+    getCartQuantity,
     getCartToProduct,
-    getCartToId,
     getCart,
     addCart,
     updateCart,

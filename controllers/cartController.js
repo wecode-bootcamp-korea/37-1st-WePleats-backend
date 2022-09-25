@@ -19,19 +19,24 @@ const addCart = asyncWrap(async (req, res) => {
 })
 
 const editCart = asyncWrap(async (req, res) => {
-    const { userId, productId, quantity } = req.body;
+    const { userId } = req.body;
+    // const { productId, quantity } = req.query;
+    const { productId, quantity } = req.body;
+    console.log(req.body)
     if ( !productId || !quantity ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
     }
     await cartService.editCart( userId, productId, quantity );
-    return res.status(200).json({ message: "Edit cart to product Success"})
+    const result = await cartService.showCart( userId )
+    return res.status(200).json({ cart: result })
 })
 
 const deleteCart = asyncWrap(async (req, res) => {
-    const { userId, productId } = req.body;
-    if ( productId.length == 0 ) {
+    const { userId } = req.body;
+    const { productId } = req.query;
+    if ( !productId ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
