@@ -44,6 +44,8 @@ const getProductDetail = async ( productId ) => {
                 colors.color,
                 main.main_category,
                 sub.sub_category,
+                main.id as main_category_num,
+                sub.id as sub_category_num,
                 pro.price,
                 sizes.size,
                 pro.new
