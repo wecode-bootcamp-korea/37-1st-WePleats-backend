@@ -24,13 +24,13 @@ const getReview = async ( productId ) => {
 const getPhotoReview = async ( productId ) => {
     try {
         const review = await appDataSource.query(
-            `SELETE
+            `SELECT
                 rv.id,
                 users.name,
                 rv.comment,
                 rv.image_url,
                 rv.create_at
-            FROM review as rv INNER JOIN users ON rv.user_id = users.id
+            FROM reviews as rv INNER JOIN users ON rv.user_id = users.id
             WHERE rv.image_url != "NULL" AND product_id = ?`,
             [ productId ]
         )
@@ -60,8 +60,6 @@ const checkReview = async ( userId, reviewId ) => {
         throw error;
     }
 }
-
-
 
 const createReview = async ( userId, productId, comment, image ) => {
     try {

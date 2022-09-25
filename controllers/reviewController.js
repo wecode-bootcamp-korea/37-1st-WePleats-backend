@@ -12,6 +12,17 @@ const getReview = asyncWrap(async (req, res) => {
     return res.status(200).json({review: review})
 })
 
+const getPhotoReview = asyncWrap(async (req, res) => {
+    const { productId } = req.query;
+    if (!productId) {
+        const err = new Error("KEY_ERROR");
+        err.statusCode = 400;
+        throw err;
+    }
+    const review = await reviewService.getPhotoReview( productId );
+    return res.status(200).json({review: review})
+})
+
 const postReview = asyncWrap(async (req, res) => {
     const { userId, productId, comment } = req.body;
     const image = req.file;
@@ -51,6 +62,7 @@ const deleteReview = asyncWrap(async (req, res) => {
 
 module.exports = {
     getReview,
+    getPhotoReview,
     postReview,
     editReview,
     deleteReview

@@ -11,6 +11,17 @@ const getReview = async ( productId ) => {
     return review
 }
 
+const getPhotoReview = async ( productId ) => {
+    const searchProduct = await productDao.getProductById( productId );
+    if ( !searchProduct ) {
+        const err = new Error("INVALID_PRODUCT");
+        err.statusCode = 406;
+        throw err
+    }
+    const review = await reviewDao.getPhotoReview( productId )
+    return review
+}
+
 const postReview = async ( userId, productId, comment, image ) => {
     const searchProduct = await productDao.getProductById( productId );
     if ( !searchProduct ) {
@@ -55,6 +66,7 @@ const deleteReview = async ( userId, reviewId ) => {
 
 module.exports = {
     getReview,
+    getPhotoReview,
     postReview,
     editReview,
     deleteReview
