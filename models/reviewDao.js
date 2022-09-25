@@ -4,7 +4,7 @@ const appDataSource = require("./dataSource");
 const getReviewByUserId = async ( userId, productId ) => {
     try {
         const [ review ] = await appDataSource.query(
-            `SELETE
+            `SELECT
                 *
             FROM reviews
             WHERE user_id = ? AND product_id = ?`,
@@ -21,7 +21,8 @@ const getReviewByUserId = async ( userId, productId ) => {
 const getReviewByProduct = async ( productId ) => {
     try {
         const review = await appDataSource.query(
-            `SELETE
+            `SELECT
+                rv.id,
                 users.name,
                 rv.comment,
                 rv.image_url,
@@ -41,7 +42,7 @@ const getReviewByProduct = async ( productId ) => {
 const getPhotoReviewByProductId = async ( productId ) => {
     try {
         const review = await appDataSource.query(
-            `SELETE
+            `SELECT
                 users.name,
                 rv.comment,
                 rv.image_url,
