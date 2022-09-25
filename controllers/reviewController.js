@@ -21,30 +21,31 @@ const postReview = asyncWrap(async (req, res) => {
         throw err;
     }
     await reviewService.postReview( userId, productId, comment, image );
-    return res.status(201).json({ message: "Create Review Sucess" })
+    return res.status(201).json({ message: "Create Review Success" })
 })
 
 const editReview =  asyncWrap(async (req, res) => {
-    const { userId, productId, comment } = req.body;
+    const { userId, reviewId, comment } = req.body;
     const image = req.file;
-    if ( !productId || !comment ) {
+    if ( !reviewId || !comment ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
     }
-    await reviewService.editReview( userId, productId, comment, image );
-    return res.status(200).json({ message: "Update Review Sucess"})
+    await reviewService.editReview( userId, reviewId, comment, image );
+    return res.status(200).json({ message: "Update Review Success"})
 })
 
 const deleteReview = asyncWrap(async (req, res) => {
-    const { userId, productId } = req.body;
-    if ( !productId ) {
+    const { userId } = req.body;
+    const { reviewId } = req.query;
+    if ( !reviewId ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
     }
-    await reviewService.deleteReview( userId, productId );
-    return res.status(204).json({ message: "Delete Review Sucess"})
+    await reviewService.deleteReview( userId, reviewId );
+    return res.status(204).json({})
 })
 
 

@@ -1,6 +1,6 @@
 const { reviewDao, productDao, orderDao } = require("../models")
 
-const getReview = async (productId) => {
+const getReview = async ( productId ) => {
     const searchProduct = await productDao.getProductById( productId );
     if ( !searchProduct ) {
         const err = new Error("INVALID_PRODUCT");
@@ -18,7 +18,7 @@ const postReview = async ( userId, productId, comment, image ) => {
         err.statusCode = 406;
         throw err
     }
-    const searchOrder = await orderDao.getOrder ( userId, productId );
+    const searchOrder = await orderDao.getOrder( userId, productId );
     if ( !searchOrder ) {
         const err = new Error("Purchased products can be reviewd");
         err.statusCode = 403;
@@ -30,15 +30,9 @@ const postReview = async ( userId, productId, comment, image ) => {
     return await reviewDao.createReview( userId, productId, comment, image );
 }
 
-const editReview = async ( userId, productId, comment, image ) => {
-    const searchProduct = await productDao.getProductById( productId );
-    if ( !searchProduct ) {
-        const err = new Error("INVALID_PRODUCT");
-        err.statusCode = 406;
-        throw err
-    }
-    const review = await reviewDao.getReviewByProduct ( userId, productId );
-    if ( !review ) {
+const editReview = async ( userId, reviewId, comment, image ) => {
+    const { review } = await reviewDao.checkReview( userId, reviewId );
+    if ( review == 0 ) {
         const err = new Error("No reviews written");
         err.statusCode = 403;
         throw err
@@ -46,23 +40,17 @@ const editReview = async ( userId, productId, comment, image ) => {
     if ( image ) {
         image = image.location;
     }
-    return await reviewDao.updateReview( review.id, comment, image );
+    return await reviewDao.updateReview( reviewId, comment, image );
 }
 
-const deleteReview = async ( userId, productId ) => {
-    const searchProduct = await productDao.getProductById( productId );
-    if ( !searchProduct ) {
-        const err = new Error("INVALID_PRODUCT");
-        err.statusCode = 406;
-        throw err
-    }
-    const searchReview = await reviewDao.getReviewByProduct ( userId, productId );
-    if ( !searchReview ) {
+const deleteReview = async ( userId, reviewId ) => {
+    const { review } = await reviewDao.checkReview( userId, reviewId );
+    if ( review == 0 ) {
         const err = new Error("No reviews written");
         err.statusCode = 403;
         throw err
     }
-    return await reviewDao.deleteReview( userId, productId )
+    return await reviewDao.deleteReview( reviewId )
 }
 
 module.exports = {

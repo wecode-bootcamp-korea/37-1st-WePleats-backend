@@ -4,52 +4,16 @@ const getReview = async ( productId ) => {
     try {
         return await appDataSource.query(
             `SELECT
-                id,
-                user_id,
-                comment,
-                image_url,
-                create_at
-            FROM reviews
-            WHERE product_id = ?`,
-            [ productId ]
-        )
-    } catch (err) {
-        const error = new Error(`INVALID_DATA_INPUT`);
-        error.statusCode = 500;
-        throw error;
-    }
-}
-
-const getReviewByUserId = async ( userId, productId ) => {
-    try {
-        const [ review ] = await appDataSource.query(
-            `SELECT
-                *
-            FROM reviews
-            WHERE user_id = ? AND product_id = ?`,
-            [ userId, productId ]
-        )
-        return review;
-    } catch (err) {
-        const error = new Error(`INVALID_DATA_INPUT`);
-        error.statusCode = 500;
-        throw error;
-    }
-}
-
-const getReviewByProduct = async ( productId ) => {
-    try {
-        const review = await appDataSource.query(
-            `SELECT
+                rv.id,
                 users.name,
                 rv.comment,
                 rv.image_url,
                 rv.create_at
-            FROM reviews as rv INNER JOIN users ON rv.user_id = users.id
-            WHERE product_id = ?`,
+            FROM reviews AS rv
+            INNER JOIN users ON rv.user_id = users.id
+            WHERE rv.product_id = ? `,
             [ productId ]
         )
-        return review;
     } catch (err) {
         const error = new Error(`INVALID_DATA_INPUT`);
         error.statusCode = 500;
@@ -57,10 +21,11 @@ const getReviewByProduct = async ( productId ) => {
     }
 }
 
-const getPhotoReviewByProductId = async ( productId ) => {
+const getPhotoReview = async ( productId ) => {
     try {
         const review = await appDataSource.query(
             `SELETE
+                rv.id,
                 users.name,
                 rv.comment,
                 rv.image_url,
@@ -76,6 +41,27 @@ const getPhotoReviewByProductId = async ( productId ) => {
         throw error;
     }
 } 
+
+const checkReview = async ( userId, reviewId ) => {
+    try {
+        const [ review ] = await appDataSource.query(
+            `SELECT EXISTS(
+                SELECT
+                    *
+                FROM reviews
+                WHERE user_id = ? AND id = ?
+            ) AS review`,
+            [ userId, reviewId ]
+        )
+        return review;
+    } catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        error.statusCode = 500;
+        throw error;
+    }
+}
+
+
 
 const createReview = async ( userId, productId, comment, image ) => {
     try {
@@ -111,12 +97,12 @@ const updateReview = async ( id, comment, image ) => {
     }
 }
 
-const deleteReview = async ( userId, productId ) => {
+const deleteReview = async ( reviewId ) => {
     try {
         return await appDataSource.query(
             `DELETE FROM reviews
-            WHERE user_id = ? AND product_id = ?`,
-            [ userId, productId ]
+            WHERE id = ?`,
+            [ reviewId ]
         )
     } catch (err) {
         const error = new Error(`INVALID_DATA_INPUT`);
@@ -128,9 +114,8 @@ const deleteReview = async ( userId, productId ) => {
 
 module.exports = {
     getReview,
-    getReviewByUserId,
-    getReviewByProduct,
-    getPhotoReviewByProductId,
+    getPhotoReview,
+    checkReview,
     createReview,
     updateReview,
     deleteReview
