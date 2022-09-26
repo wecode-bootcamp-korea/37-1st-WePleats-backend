@@ -27,7 +27,10 @@ const addCart = async ( userId, productId, quantity ) => {
     return await cartDao.addCart( userId, productId, quantity );
 }
 
-const checkToProduct = async ( userId, productId, check ) => {
+const checkToProduct = async ( userId, productId ) => {
+    if ( !productId ) {
+        return await cartDao.updateCheck( userId, productId );
+    }
     if ( !Array.isArray( productId ) ) {
         productId = [ productId ];
     }
@@ -37,7 +40,7 @@ const checkToProduct = async ( userId, productId, check ) => {
         err.statusCode = 406;
         throw err;
     }
-    return await cartDao.updateCheck( userId, productId, check )
+    return await cartDao.updateCheck( userId, productId );
 }
 
 const editCart = async ( userId, productId, quantity ) => {

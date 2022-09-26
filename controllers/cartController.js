@@ -21,11 +21,6 @@ const addCart = asyncWrap(async (req, res) => {
 const checkToProduct = asyncWrap(async (req, res) => {
     const { userId } = req.body;
     const { productId } = req.query;
-    if( !productId ) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
     await cartService.checkToProduct( userId, productId );
     const result = await cartService.showCart( userId );
     return res.status(200).json({ cart: result})
@@ -59,6 +54,7 @@ const deleteCart = asyncWrap(async (req, res) => {
 
 const cartToOrder = asyncWrap(async (req, res) => {
     const { userId, productId } = req.body;
+    console.log(req.body)
     if( !productId ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
