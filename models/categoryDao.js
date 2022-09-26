@@ -10,7 +10,7 @@ const getProductByCategory = async (categoryId) => {
         products.price,
         products.new,
         products.create_at,
-        main_categorys.main_category
+        main_categorys.main_category,
         categorys.sub_category
         
     FROM products
@@ -18,13 +18,13 @@ const getProductByCategory = async (categoryId) => {
     ON products.category=categorys.id
     INNER JOIN main_categorys
     ON main_categorys.id=categorys.main_category
-    WHERE (
-        CASE WHEN
-            main_category
-    )`, [categoryId]
+    WHERE CASE
+        WHEN ? = main
+        THEN main_category.id = ?
+
+    )`, [categoryId, color]
     )
     
-    const getThumbImage = 
 }
 
 module.exports = {
