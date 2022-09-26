@@ -11,7 +11,7 @@ const signIn = async (email, password) => {
     const user = await userDao.getUserByEmail(email)
 
     const match = await bcrypt.compare(password, user.password);
-
+    console.log(password)
     if (!match) {
         const err = new Error('비밀번호가 일치하지 않습니다.')
         err.statusCode = 401
@@ -19,7 +19,7 @@ const signIn = async (email, password) => {
         throw err
     }
 
-    const accessToken = jwt.sign({ user_id: user.id }, process.env.JWT_KEY);
+    const accessToken = jwt.sign({ user_id: user.idLa }, process.env.JWT_KEY);
     return accessToken;
 }
 
