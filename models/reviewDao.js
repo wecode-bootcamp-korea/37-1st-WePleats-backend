@@ -1,6 +1,6 @@
 const appDataSource = require("./dataSource");
 
-const getReview = async ( productId ) => {
+const getReview = async ( productId, userId ) => {
     try {
         return await appDataSource.query(
             `SELECT
@@ -8,11 +8,14 @@ const getReview = async ( productId ) => {
                 users.name,
                 rv.comment,
                 rv.image_url,
-                rv.create_at
+                rv.create_at,
+                us.id as control
             FROM reviews AS rv
             INNER JOIN users ON rv.user_id = users.id
+            LEFT JOIN users as us ON rv.user_id = us.id
+                AND us.id = ?
             WHERE rv.product_id = ? `,
-            [ productId ]
+            [ userId, productId ]
         )
     } catch (err) {
         const error = new Error(`INVALID_DATA_INPUT`);

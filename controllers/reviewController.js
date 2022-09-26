@@ -3,18 +3,19 @@ const { asyncWrap } = require("../middleware/errorControl")
 
 const getReview = asyncWrap(async (req, res) => {
     const { productId } = req.query;
-    if (!productId) {
+    const { userId } = req.body
+    if ( !productId ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
     }
-    const review = await reviewService.getReview( productId );
+    const review = await reviewService.getReview( productId, userId );
     return res.status(200).json({review: review})
 })
 
 const getPhotoReview = asyncWrap(async (req, res) => {
     const { productId } = req.query;
-    if (!productId) {
+    if ( !productId ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;

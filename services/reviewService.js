@@ -1,13 +1,13 @@
 const { reviewDao, productDao } = require("../models")
 
-const getReview = async ( productId ) => {
+const getReview = async ( productId, userId ) => {
     const searchProduct = await productDao.getProductById( productId );
     if ( !searchProduct ) {
         const err = new Error("INVALID_PRODUCT");
         err.statusCode = 406;
         throw err
     }
-    const review = await reviewDao.getReview( productId )
+    const review = await reviewDao.getReview( productId, userId )
     return review
 }
 
