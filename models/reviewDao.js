@@ -24,7 +24,25 @@ const getReview = async ( productId, userId ) => {
     }
 }
 
-const getPhotoReview = async ( productId ) => {
+const getImageToReview = async ( reviewId ) => {
+    try {
+        const [ image ] = await appDataSource.query(
+            `SELECT
+                image_url
+            FROM reviews
+            WHERE id = ?`,
+            [ reviewId ]
+        )
+        return image
+    } catch (err) {
+        console.log(err)
+        const error = new Error(`INVALID_DATA_INPUT`);
+        error.statusCode = 500;
+        throw error;
+    }
+}
+
+const getPhotoReview = async ( userId, productId ) => {
     try {
         const review = await appDataSource.query(
             `SELECT
@@ -32,10 +50,12 @@ const getPhotoReview = async ( productId ) => {
                 users.name,
                 rv.comment,
                 rv.image_url,
-                rv.create_at
+                rv.create_at,
+                us.id as control
             FROM reviews as rv INNER JOIN users ON rv.user_id = users.id
+            LEFT JOIN users as us ON rv.user_id = us.id AND us.id = ?
             WHERE rv.image_url != "NULL" AND product_id = ?`,
-            [ productId ]
+            [ userId, productId ]
         )
         return review;
     } catch (err) {
@@ -43,7 +63,26 @@ const getPhotoReview = async ( productId ) => {
         error.statusCode = 500;
         throw error;
     }
-} 
+}
+
+const getReviewExists = async ( userId, productId ) => {
+    try {
+        const [ review ] = await appDataSource.query(
+            `SELECT EXISTS(
+                SELECT
+                    *
+                FROM reviews
+                WHERE user_id = ? AND product_id = ?
+            ) AS review`,
+            [ userId, productId ]
+        )
+        return review
+    } catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        error.statusCode = 500;
+        throw error;
+    }
+}
 
 const checkReview = async ( userId, reviewId ) => {
     try {
@@ -119,5 +158,7 @@ module.exports = {
     checkReview,
     createReview,
     updateReview,
-    deleteReview
+    deleteReview,
+    getReviewExists,
+    getImageToReview
 }
