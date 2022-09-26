@@ -7,7 +7,7 @@ const getProductByCategory = async (req, res) => {
         error.statusCode = 400
         throw error
     }
-    const getProducts = await categoryService.getProductByCategory(main)
+    const getProducts = await categoryService.getProductByCategory(main, sub, color)
 	console.log("main",main)
     console.log("sub",sub)
     console.log("color",color)

@@ -1,7 +1,7 @@
 const { categoryDao } = require('../models');
 
-const getProductByCategory = async (categoryId) => {
-    return await categoryDao.getProductByCategory(categoryId)
+const getProductByCategory = async (category, id, color) => {
+    return await categoryDao.getProductByCategory(category, id, color)
 }
 
 module.exports = {
