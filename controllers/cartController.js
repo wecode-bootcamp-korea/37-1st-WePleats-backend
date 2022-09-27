@@ -18,6 +18,14 @@ const addCart = asyncWrap(async (req, res) => {
     return res.status(201).json({ message: "Add cart to product Success"})
 })
 
+const checkToProduct = asyncWrap(async (req, res) => {
+    const { userId } = req.body;
+    const { productId } = req.query;
+    await cartService.checkToProduct( userId, productId );
+    const result = await cartService.showCart( userId );
+    return res.status(200).json({ cart: result})
+})
+
 const editCart = asyncWrap(async (req, res) => {
     const { userId } = req.body;
     const { productId, quantity } = req.query;
@@ -44,9 +52,11 @@ const deleteCart = asyncWrap(async (req, res) => {
     return res.status(200).json({ cart: result })
 })
 
+
 module.exports = {
     showCart,
     addCart,
+    checkToProduct,
     editCart,
     deleteCart
 }

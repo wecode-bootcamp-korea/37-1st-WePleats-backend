@@ -61,7 +61,8 @@ const getCart = async ( userId ) => {
                 pro.name,
                 pro.price,
                 carts.quantity,
-                thum.thumbnail_url as thumbnailUrl
+                thum.thumbnail_url as thumbnailUrl,
+                carts.check_in as checkIn
             FROM carts INNER JOIN products as pro ON carts.product_id = pro.id
             INNER JOIN thumbnail_images as thum ON thum.product_id = pro.id
             WHERE carts.user_id = ? AND thum.thumbnail_main = 1`,
@@ -121,6 +122,27 @@ const deleteCart = async ( userId, productId ) => {
     }
 }
 
+const updateCheck = async ( userId, productId ) => {
+    try {
+        await appDataSource.query(
+            `UPDATE carts SET
+                check_in = 0
+            WHERE user_id = ?`,
+            [ userId ]
+        )
+        return await appDataSource.query(
+            `UPDATE carts SET
+                check_in = 1
+            WHERE user_id = ? AND product_id IN (?)`,
+            [ userId, productId ]
+        )
+    } catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        err.statusCode = 500;
+        throw error;
+    }
+}
+
 module.exports = {
     getCartExists,
     getCartQuantity,
@@ -128,5 +150,6 @@ module.exports = {
     getCart,
     addCart,
     updateCart,
-    deleteCart
+    deleteCart,
+    updateCheck
 }
