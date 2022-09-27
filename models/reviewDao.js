@@ -35,7 +35,6 @@ const getImageToReview = async ( reviewId ) => {
         )
         return image
     } catch (err) {
-        console.log(err)
         const error = new Error(`INVALID_DATA_INPUT`);
         error.statusCode = 500;
         throw error;

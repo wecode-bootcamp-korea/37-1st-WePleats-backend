@@ -27,7 +27,6 @@ const getPhotoReview = asyncWrap(async (req, res) => {
 
 const postReview = asyncWrap(async (req, res) => {
     const { userId, productId, comment } = req.body;
-    console.log(req.body)
     const image = req.file;
     if ( !productId || !comment ) {
         const err = new Error("KEY_ERROR");
@@ -42,7 +41,6 @@ const postReview = asyncWrap(async (req, res) => {
 const editReview =  asyncWrap(async (req, res) => {
     const { userId, reviewId, comment, productId } = req.body;
     const image = req.file;
-    console.log(req.body)
     if ( !reviewId || !comment ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
