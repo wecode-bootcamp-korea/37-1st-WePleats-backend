@@ -45,8 +45,33 @@ const getUserById = async (id) => {
     return result[0]
 }
 
+const getOrderUserInfo = async ( userId ) => {
+    try {
+        const [ result ] = await appDataSource.query(
+            `SELECT
+                id,
+                name,
+                email,
+                phone_number,
+                address,
+                grade,
+                point
+            FROM users
+            WHERE id = ?`,
+            [ userId ]
+        )
+        return result
+    } catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        error.statusCode = 500;
+        throw error;
+    }
+}    
+
+
 module.exports = {
     createUser,
     getUserByEmail,
-    getUserById
+    getUserById,
+    getOrderUserInfo
 }

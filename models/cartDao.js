@@ -121,6 +121,24 @@ const deleteCart = async ( userId, productId ) => {
     }
 }
 
+const getProductToCheck = async ( userId ) => {
+    try {
+        const [ result ] = await appDataSource.query(
+            `SELECT EXISTS(
+                SELECT
+                    *
+                FROM carts
+                WHERE user_id = ? AND check_in = 1) AS cart`,
+                [ userId ]
+        )
+        return result
+    } catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        err.statusCode = 500;
+        throw error;
+    }
+}
+
 module.exports = {
     getCartExists,
     getCartQuantity,
@@ -128,5 +146,6 @@ module.exports = {
     getCart,
     addCart,
     updateCart,
-    deleteCart
+    deleteCart,
+    getProductToCheck
 }
