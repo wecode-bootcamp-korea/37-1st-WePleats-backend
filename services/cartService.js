@@ -28,18 +28,6 @@ const addCart = async ( userId, productId, quantity ) => {
 }
 
 const checkToProduct = async ( userId, productId ) => {
-    if ( !productId ) {
-        return await cartDao.updateCheck( userId, productId );
-    }
-    if ( !Array.isArray( productId ) ) {
-        productId = [ productId ];
-    }
-    const { cart } = await cartDao.getCartToProduct( userId, productId );
-    if ( !+cart ) {
-        const err = new Error("Products is not in cart");
-        err.statusCode = 406;
-        throw err;
-    }
     return await cartDao.updateCheck( userId, productId );
 }
 
@@ -54,9 +42,7 @@ const editCart = async ( userId, productId, quantity ) => {
 }
 
 const deleteCart = async ( userId, productId ) => {
-    if ( !Array.isArray( productId ) ) {
-        productId = [ productId ];
-    }
+    if ( !Array.isArray( productId ) ) productId = [ productId ];
     const { cart } = await cartDao.getCartToProduct( userId, productId );
     if ( !+cart ) {
         const err = new Error("Products is not in cart");
@@ -66,21 +52,10 @@ const deleteCart = async ( userId, productId ) => {
     return await cartDao.deleteCart( userId, productId );
 }
 
-const cartToOrder = async ( userId, productId ) => {
-    const { cart } = await cartDao.getCartCheckProduct( userId, productId );
-    if ( !+cart ) {
-        const err = new Error("The product you requested does not match the product in the cart.");
-        err.statusCode = 406;
-        throw err;
-    }
-    return
-}
-
 module.exports = {
     showCart,
     addCart,
     checkToProduct,
     editCart,
-    deleteCart,
-    cartToOrder
+    deleteCart
 }

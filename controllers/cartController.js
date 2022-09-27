@@ -52,22 +52,11 @@ const deleteCart = asyncWrap(async (req, res) => {
     return res.status(200).json({ cart: result })
 })
 
-const cartToOrder = asyncWrap(async (req, res) => {
-    const { userId, productId } = req.body;
-    if( !productId ) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
-    await cartService.cartToOrder( userId, productId )
-    return res.status(200).json({ message: "orderOK" })
-})
 
 module.exports = {
     showCart,
     addCart,
     checkToProduct,
     editCart,
-    deleteCart,
-    cartToOrder
+    deleteCart
 }

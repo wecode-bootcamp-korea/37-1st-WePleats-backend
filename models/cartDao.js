@@ -143,23 +143,6 @@ const updateCheck = async ( userId, productId ) => {
     }
 }
 
-const getCartCheckProduct = async ( userId, productId ) => {
-    try {
-        const [ result ] = await appDataSource.query(
-            `SELECT IF(
-                COUNT(*) = ?, 1, NULL) AS cart
-            FROM carts
-            WHERE user_id = ? AND check_in = 1`,
-            [ productId.length, userId ]
-        )
-        return result
-    } catch (err) {
-        const error = new Error(`INVALID_DATA_INPUT`);
-        error.statusCode = 500;
-        throw error;
-    }
-}
-
 module.exports = {
     getCartExists,
     getCartQuantity,
@@ -168,6 +151,5 @@ module.exports = {
     addCart,
     updateCart,
     deleteCart,
-    updateCheck,
-    getCartCheckProduct
+    updateCheck
 }

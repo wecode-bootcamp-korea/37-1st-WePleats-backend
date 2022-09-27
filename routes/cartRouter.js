@@ -8,7 +8,6 @@ const { cartController } = require("../controllers")
 
 router.get("", accessToken, cartController.showCart);
 router.post("", accessToken, cartController.addCart);
-router.post("/order", accessToken, cartController.cartToOrder)
 router.patch("/check", accessToken, cartController.checkToProduct)
 router.patch("", accessToken, cartController.editCart)
 router.delete("", accessToken, cartController.deleteCart)
