@@ -17,7 +17,6 @@ const getProductImage = async ( productId ) => {
     }
 }
 
-<<<<<<< HEAD
 const getProductDetail = async ( productId ) => {
     try {
         const [ product ] = await appDataSource.query(
