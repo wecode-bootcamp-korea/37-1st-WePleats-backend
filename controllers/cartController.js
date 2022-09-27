@@ -54,7 +54,6 @@ const deleteCart = asyncWrap(async (req, res) => {
 
 const cartToOrder = asyncWrap(async (req, res) => {
     const { userId, productId } = req.body;
-    console.log(req.body)
     if( !productId ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
