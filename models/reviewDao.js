@@ -1,6 +1,6 @@
 const appDataSource = require("./dataSource");
 
-const getReview = async ( productId, userId ) => {
+const getReview = async ( productId, userId, offset, limit ) => {
     try {
         return await appDataSource.query(
             `SELECT
@@ -14,8 +14,9 @@ const getReview = async ( productId, userId ) => {
             INNER JOIN users ON rv.user_id = users.id
             LEFT JOIN users as us ON rv.user_id = us.id
                 AND us.id = ?
-            WHERE rv.product_id = ? `,
-            [ userId, productId ]
+            WHERE rv.product_id = ?
+            ORDER BY id desc LIMIT ?,? `,
+            [ userId, productId, offset, limit ]
         )
     } catch (err) {
         const error = new Error(`INVALID_DATA_INPUT`);
@@ -41,7 +42,7 @@ const getImageToReview = async ( reviewId ) => {
     }
 }
 
-const getPhotoReview = async ( userId, productId ) => {
+const getPhotoReview = async ( productId, userId, offset, limit ) => {
     try {
         const review = await appDataSource.query(
             `SELECT
@@ -53,8 +54,9 @@ const getPhotoReview = async ( userId, productId ) => {
                 us.id as control
             FROM reviews as rv INNER JOIN users ON rv.user_id = users.id
             LEFT JOIN users as us ON rv.user_id = us.id AND us.id = ?
-            WHERE rv.image_url != "NULL" AND product_id = ?`,
-            [ userId, productId ]
+            WHERE rv.image_url != "NULL" AND product_id = ?
+            ORDER BY id desc LIMIT ?,?`,
+            [ userId, productId, offset, limit ]
         )
         return review;
     } catch (err) {
