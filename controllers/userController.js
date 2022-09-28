@@ -11,7 +11,7 @@ const signUp = (async (req, res) => {
     try {
         const { name, email, password, birthday, phone_number, address, gender, profile_image} = req.body;
 
-        if ( !name || !email || !password || !birthday || !phone_number || !address || !gender ) {
+        if ( !name || !email || !password || !birthday || !phone_number || !gender ) {
             const error = new Error('KEY_ERROR')
             error.statusCode = 400
             throw error
