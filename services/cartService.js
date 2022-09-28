@@ -27,6 +27,10 @@ const addCart = async ( userId, productId, quantity ) => {
     return await cartDao.addCart( userId, productId, quantity );
 }
 
+const checkToProduct = async ( userId, productId ) => {
+    return await cartDao.updateCheck( userId, productId );
+}
+
 const editCart = async ( userId, productId, quantity ) => {
     const { cart } = await cartDao.getCartExists( userId, productId );
     if( !+cart ) {
@@ -38,9 +42,7 @@ const editCart = async ( userId, productId, quantity ) => {
 }
 
 const deleteCart = async ( userId, productId ) => {
-    if ( !Array.isArray( productId ) ) {
-        productId = [ productId ];
-    }
+    if ( !Array.isArray( productId ) ) productId = [ productId ];
     const { cart } = await cartDao.getCartToProduct( userId, productId );
     if ( !+cart ) {
         const err = new Error("Products is not in cart");
@@ -53,6 +55,7 @@ const deleteCart = async ( userId, productId ) => {
 module.exports = {
     showCart,
     addCart,
+    checkToProduct,
     editCart,
     deleteCart
 }

@@ -14,7 +14,24 @@ const getOrderProduct = async ( userId ) => {
             WHERE carts.check_in = 1 AND thumb.thumbnail_main = 1 AND carts.user_id = ?`,
             [ userId ]
         )
-        return result
+        return result;
+    } catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        error.statusCode = 500;
+        throw error;
+    }
+}
+
+const getOrder = async ( userId, productId ) => {
+    try {
+        const [ order ] = await appDataSource.query(
+            `SELECT
+                *
+            FROM orders
+            WHERE user_id = ? AND product_id = ?`,
+            [ userId, productId ]
+        )
+        return order;
     } catch (err) {
         const error = new Error(`INVALID_DATA_INPUT`);
         error.statusCode = 500;
@@ -112,6 +129,7 @@ const getOrderList = async ( userId ) => {
 
 
 module.exports = {
+    getOrder,
     getOrderProduct,
     getCouponToUser,
     createOrderList,
