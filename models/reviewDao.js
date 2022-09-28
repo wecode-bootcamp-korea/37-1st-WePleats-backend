@@ -104,21 +104,17 @@ const checkReview = async ( userId, reviewId ) => {
 
 
 const createReview = async ( userId, productId, comment, image ) => {
-    try {
-        return await appDataSource.query(
-            `INSERT INTO reviews(
-                user_id,
-                product_id,
-                comment,
-                image_url
-            )VALUES( ?, ?, ?, ? )`,
-            [ userId, productId, comment, image ]
-        )
-    } catch (err) {
-        const error = new Error(`INVALID_DATA_INPUT`);
-        error.statusCode = 500;
-        throw error;
-    }
+		const result = await appDataSource.query(
+				`INSERT INTO reviews(
+						user_id,
+						product_id,
+						comment,
+						image_url
+				)VALUES( ?, ?, ?, ? )`,
+				[ userId, productId, comment, image ]
+		)
+
+		return result.insertId
 }
 
 const updateReview = async ( id, comment, image ) => {

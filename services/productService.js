@@ -1,18 +1,31 @@
 const { productDao,reviewDao } = require("../models");
 
 const getProduct = async ( productId ) => {
-    const product = await productDao.getProductDetail( productId );
-    if ( !product ) {
-        const err = new Error("INVALID_PRODUCT");
-        err.statusCode = 406;
-        throw err;
-    }
+    const product = await productDao.getProduct( productId );
 
-    const reviews = await reviewDao.getReviewByProduct( productId );
-    const images = await productDao.getProductImage( productId );
-    product.image_url = images
+    if ( !product ) throw BaseError("PRODUCT_DOES_NOT_EXISTS")
 
-    return [ product, reviews ]
+		product.reviews = await reviewDao.getReviews( productId );
+    product.images  = await productDao.getProductImages( productId );
+
+    return product
+		/*
+		 {
+				"id" : 1,
+				"name" : "모니터",
+				"images" : [],
+				"reviews" : [{
+						"id" : 1,
+						"content" : "너무 좋아요.",
+						"productId" : 1
+				 },
+				 {
+						"id" : 2,
+						"content" : "너무 좋아요.",
+						"productId" : 1
+				 }]
+		 }
+		 */
 }
 
 module.exports = {

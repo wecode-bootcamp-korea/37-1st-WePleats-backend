@@ -2,17 +2,14 @@ const { reviewService } = require("../services");
 const { asyncWrap } = require("../middleware/errorControl")
 
 const getReview = asyncWrap(async (req, res) => {
+		// GET :8000/reviews?productId=1
+		// GET :8000/products/1/reviews
     const { productId } = req.params;
-    const { userId } = req.body
+    const { user } = req.user
 
-    if ( !productId ) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
+    const reviews = await reviewService.getReview( productId, user.id );
 
-    const review = await reviewService.getReview( productId, userId );
-    return res.status(200).json({review: review})
+    return res.status(200).json({ reviews })
 })
 
 const getPhotoReview = asyncWrap(async (req, res) => {
@@ -41,33 +38,34 @@ const postReview = asyncWrap(async (req, res) => {
     
     await reviewService.postReview( userId, productId, comment, image );
     const review = await reviewService.getReview( productId, userId );
+
     return res.status(200).json({message:"Create Review Success",review: review})
 })
 
 const editReview =  asyncWrap(async (req, res) => {
+		// PATCH :8000/reviews/1
+	  const { reviewId } = req.params
     const { userId, reviewId, comment, productId } = req.body;
+
     const image = req.file;
-    if ( !reviewId || !comment ) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
+
+    if ( !reviewId || !comment ) throw new Error("KEY_ERROR");
+
     await reviewService.editReview( userId, reviewId, comment, image );
+
     const review = await reviewService.getReview( productId, userId );
+
     return res.status(200).json({ message: "Update Review Success",review: review})
 })
 
 const deleteReview = asyncWrap(async (req, res) => {
+		// DELETE :8000/reviews/1
     const { userId } = req.body;
-    const { reviewId, productId } = req.query;
-    if ( !reviewId ) {
-        const err = new Error("KEY_ERROR");
-        err.statusCode = 400;
-        throw err;
-    }
+    const { reviewId } = req.params;
+
     await reviewService.deleteReview( userId, reviewId );
-    const result = await reviewService.getReview( productId, userId );
-    return res.status(200).json({review: result})
+
+    return res.status(204)
 })
 
 

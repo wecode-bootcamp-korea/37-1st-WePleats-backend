@@ -27,19 +27,13 @@ const getPhotoReview = async ( productId, userId ) => {
 }
 
 const postReview = async ( userId, productId, comment, image ) => {
-    const searchProduct = await productDao.getProductById( productId );
-    if ( !searchProduct ) {
-        const err = new Error("INVALID_PRODUCT");
-        err.statusCode = 406;
-        throw err
-    }
+    const product = await productDao.getProductById( productId );
 
-    const searchOrder = await orderDao.getOrder( userId, productId );
-    if ( !searchOrder ) {
-        const err = new Error("Purchased products can be reviewd");
-        err.statusCode = 403;
-        throw err
-    }
+		if (!product) throw new Error()
+
+    const order = await orderDao.getOrder( userId, productId );
+
+		if (!product) throw new Error()
 
     const { review } = await reviewDao.getReviewExists( userId, productId );
     if ( +review ) {
@@ -47,7 +41,9 @@ const postReview = async ( userId, productId, comment, image ) => {
         err.statusCode = 403;
         throw err
     }
+
     if ( image ) image = image.location;
+
     return await reviewDao.createReview( userId, productId, comment, image );
 }
 

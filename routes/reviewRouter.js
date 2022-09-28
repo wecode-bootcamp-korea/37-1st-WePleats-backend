@@ -5,7 +5,7 @@ const accessToken = require("../middleware/auth")
 
 const { reviewController } = require("../controllers")
 
-router.get("/:productId", accessToken, reviewController.getReview)
+router.get("/:productId", loginRequired, reviewController.getReview)
 router.get("/photo", accessToken, reviewController.getPhotoReview)
 router.post("", upload.single("image"), accessToken, reviewController.postReview);
 router.patch("", upload.single("image"), accessToken, reviewController.editReview);

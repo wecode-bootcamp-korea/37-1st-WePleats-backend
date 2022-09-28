@@ -1,20 +1,14 @@
 const appDataSource = require("./dataSource");
 
 const getProductImage = async ( productId ) => {
-    try {
-        const image = await appDataSource.query(
-            `SELECT
-                image_url as image
-            FROM product_images
-            WHERE product_id = ?`,
-            [ productId ]
-        )
-        return image
-    } catch (err) {
-        const error = new Error(`INVALID_DATA_INPUT`);
-        error.statusCode = 500;
-        throw error;
-    }
+			const image = await appDataSource.query(
+					`SELECT
+							image_url as image
+					FROM product_images
+					WHERE product_id = ?`,
+					[ productId ]
+			)
+			return image
 }
 
 const getProductDetail = async ( productId ) => {
