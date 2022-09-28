@@ -3,17 +3,49 @@ const { asyncWrap } = require("../middleware/errorControl")
 
 const getOrder = asyncWrap(async (req, res) => {
     const { userId } = req.body;
+
     const result = await orderService.getOrder( userId );
+
     return res.status(200).json({ order: result })
 })
 
-const createOrder = asyncWrap(async ( req, res) => {
-    const { userId, address, coupon, point } = req.body;
-    await orderService.createOrder( userId, address, coupon, point );
+const getOrderList = asyncWrap(async (req, res) => {
+    const { userId } = req.body;
+
+    const result = await orderService.getOrderList( userId );
+    return res.status(200).json({ order: result })
+})
+
+const createProductToOrder = asyncWrap(async (req, res) => {
+    const { userId, productId, quantity } = req.body;
+    
+    if ( !productId || !quantity ) {
+        const err = new Error("KEY_ERROR");
+        err.statusCode = 400;
+        throw err;
+    }
+
+    await orderService.createProductToOrder( userId, productId, quantity )
+    return res.status(201).json({ message: "orderOK"})
+})
+
+const createOrder = asyncWrap(async (req, res) => {
+    const { userId, address, couponId, point, price } = req.body;
+
+    if ( !address || !couponId || !point || !price ) {
+        const err = new Error("KEY_ERROR");
+        err.statusCode = 400;
+        throw err;
+    }
+
+    await orderService.createOrder( userId, address, couponId, point, price );
+
     return res.status(201).json({ message: "order Success"})
 })
 
 module.exports = {
     getOrder,
-    createOrder
+    getOrderList,
+    createOrder,
+    createProductToOrder
 }
