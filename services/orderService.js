@@ -2,16 +2,16 @@ const { orderDao, cartDao, userDao, productDao } = require("../models")
 
 
 const getOrder = async ( userId ) => {
-    const [ cart ] = await cartDao.getCartToCheckProduct( userId )
+    const [ cart ] = await cartDao.getCartToCheckProduct( userId );
     if ( !cart ) {
-        const err = new Error("Shopping cart not in selected products")
+        const err = new Error("Shopping cart not in selected products");
         err.statusCode = 403;
         throw err
     }
 
-    const user = await userDao.getOrderUserInfo( userId )
-    const products = await orderDao.getOrderProduct( userId )
-    const coupons = await orderDao.getCouponToUser( userId )
+    const user = await userDao.getOrderUserInfo( userId );
+    const products = await orderDao.getOrderProduct( userId );
+    const coupons = await orderDao.getCouponToUser( userId );
 
     for ( const el of products ) {
         el.price = el.price * el.quantity
@@ -37,7 +37,7 @@ const createOrder = async ( userId, address, couponId, point, price ) => {
 
     const user = await userDao.getOrderUserInfo( userId );
     if ( user.point < point ) {
-        const err = new Error("There are few points")
+        const err = new Error("There are few points");
         err.statusCode = 400;
         throw err;
     }
@@ -56,8 +56,8 @@ const createOrder = async ( userId, address, couponId, point, price ) => {
     const { insertId } = await orderDao.createOrderList( price, address );
     await orderDao.createOrder( userId, products, insertId );
     await cartDao.deleteCheckProduct( userId );
-    await userDao.updateCoupon( userId, couponId )
-    return await userDao.updatePoint( userId, user.point - point + savePoint )
+    await userDao.updateCoupon( userId, couponId );
+    return await userDao.updatePoint( userId, user.point - point + savePoint );
 }
 
 const createProductToOrder = async ( userId, productId, quantity ) => {
@@ -68,14 +68,14 @@ const createProductToOrder = async ( userId, productId, quantity ) => {
         throw err;
     }
 
-    const { cart } = await cartDao.getCartExists( userId, productId )
+    const { cart } = await cartDao.getCartExists( userId, productId );
     if ( +cart ) {
-        await cartDao.updateCart( userId, productId, quantity )
+        await cartDao.updateCart( userId, productId, quantity );
     }
 
-    await cartDao.addCart( userId, productId, quantity )
+    await cartDao.addCart( userId, productId, quantity );
 
-    return await cartDao.updateCheck( userId, productId )
+    return await cartDao.updateCheck( userId, productId );
 }
 
 
