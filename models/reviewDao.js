@@ -102,6 +102,7 @@ const checkReview = async ( userId, reviewId ) => {
     }
 }
 
+
 const createReview = async ( userId, productId, comment, image ) => {
     try {
         return await appDataSource.query(

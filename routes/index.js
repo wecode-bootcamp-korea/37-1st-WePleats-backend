@@ -3,11 +3,13 @@ const router = express.Router();
 
 const reviewRouter = require("./reviewRouter");
 const userRouter = require('./userRouter');
+const productRouter = require("./productRouter")
 const cartRouter = require("./cartRouter")
 
 
 router.use('/users', userRouter);
 router.use("/review", reviewRouter);
+router.use("/product", productRouter);
 router.use("/cart", cartRouter);
 
 
