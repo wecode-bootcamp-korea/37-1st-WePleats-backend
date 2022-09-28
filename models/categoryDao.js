@@ -18,15 +18,15 @@ const getNewProductsList = async () => {
         ON main_categorys.id=categorys.main_category
     
     WHERE
-    products.new=0
+    products.new=1
     `)
 
     let productIds = []
-    for(const product of productData) {
+    for(const product of newProductData) {
         productIds.push(product.id)
     }
 
-    const productThumbnailImages = await dataSource.query(`
+    const productThumbnailImages = await appDataSource.query(`
         SELECT
         id,
         product_id,
@@ -38,12 +38,11 @@ const getNewProductsList = async () => {
         `, [productIds]
     )
 
-    console.log(productData.length)
-    for(let i=0; i<=productData.length-1; i++) {
-        productData[i].thumbnail_url = []
+    for(let i=0; i<=newProductData.length-1; i++) {
+        newProductData[i].thumbnail_url = []
         for(let j=0; j<=productThumbnailImages.length-1; j++) {
-            if (productData[i].id === productThumbnailImages[j].product_id) {
-                productData[i].thumbnail_url.push(productThumbnailImages[j].thumbnail_url)
+            if (newProductData[i].id === productThumbnailImages[j].product_id) {
+                newProductData[i].thumbnail_url.push(productThumbnailImages[j].thumbnail_url)
             };
         }
     }

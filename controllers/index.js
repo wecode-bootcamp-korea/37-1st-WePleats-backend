@@ -1,13 +1,13 @@
 const userController = require('./userController');
 const reviewController = require("./reviewController");
 const cartController = require("./cartController");
-const newProductsController = require("./newProductsController");
+const categoryController = require("./categoryController");
 
 
 module.exports = {
     userController,
     reviewController,
     cartController,
-    newProductsController
+    categoryController
 }
 
