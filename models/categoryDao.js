@@ -26,10 +26,12 @@ const getProductByCategory = async (category, id, color) => {
     IF(?='main', categorys.main_category=?,
         IF(?='sub', products.category=?, null)
     )
-    AND IF(?=?, products.color=?, products.id)
+    AND IF(?=?, products.color=1, products.id)
     `, [category, id, category, id, color, color, color]
     )
 
+    WHERE
+        if(?=?, products.category=3, )
     let productIds = []
     for(const product of productData) {
         productIds.push(product.id)
