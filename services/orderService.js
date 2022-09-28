@@ -1,4 +1,4 @@
-const { orderDao, cartDao, userDao } = require("../models")
+const { orderDao, cartDao, userDao, productDao } = require("../models")
 
 
 const getOrder = async ( userId ) => {
@@ -61,11 +61,18 @@ const createOrder = async ( userId, address, couponId, point, price ) => {
 }
 
 const createProductToOrder = async ( userId, productId, quantity ) => {
-    const { cart } = await cartDao.getCartExists( userId, productId )
+    const product = await productDao.getProductById( productId );
+    if ( !product ) {
+        const err = new Error("INVALID_PRODUCT");
+        err.statusCode = 406;
+        throw err;
+    }
 
+    const { cart } = await cartDao.getCartExists( userId, productId )
     if ( +cart ) {
         await cartDao.updateCart( userId, productId, quantity )
     }
+
     await cartDao.addCart( userId, productId, quantity )
 
     return await cartDao.updateCheck( userId, productId )
