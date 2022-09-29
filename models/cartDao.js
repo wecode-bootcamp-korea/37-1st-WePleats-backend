@@ -122,6 +122,39 @@ const deleteCart = async ( userId, productId ) => {
     }
 }
 
+const getCartToCheckProduct = async ( userId ) => {
+    try {
+        const products = await appDataSource.query(
+            `SELECT
+                products.id,
+                carts.quantity,
+                products.price
+            FROM carts INNER JOIN products ON products.id = carts.product_id
+            WHERE user_id = ? AND check_in = 1`,
+            [ userId ]
+        )
+        return products
+    } catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        err.statusCode = 500;
+        throw error;
+    }
+}
+
+const deleteCheckProduct = async ( userId ) => {
+    try {
+        return await appDataSource.query(
+            `DELETE FROM carts
+            WHERE user_id = ? AND check_in = 1`,
+            [ userId ]
+        )
+    } catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        err.statusCode = 500;
+        throw error;
+    }
+}
+
 const updateCheck = async ( userId, productId ) => {
     try {
         await appDataSource.query(
@@ -151,5 +184,7 @@ module.exports = {
     addCart,
     updateCart,
     deleteCart,
+    getCartToCheckProduct,
+    deleteCheckProduct,
     updateCheck
 }
