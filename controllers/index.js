@@ -12,7 +12,7 @@ module.exports = {
     reviewController,
     productController,
     cartController,
-    orderController
+    orderController,
     categoryController
 }
 

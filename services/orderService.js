@@ -67,7 +67,7 @@ const createProductToOrder = async ( userId, productId, quantity ) => {
         err.statusCode = 406;
         throw err;
     }
-
+  
     const { cart } = await cartDao.getCartExists( userId, productId );
     if ( +cart ) {
         await cartDao.updateCart( userId, productId, quantity );
