@@ -3,29 +3,31 @@ const { asyncWrap } = require("../middleware/errorControl")
 
 const getReview = asyncWrap(async (req, res) => {
     const { productId } = req.params;
-    const { userId } = req.body
+    const { userId } = req.body;
+    const { offset, limit } = req.query;
 
-    if ( !productId ) {
+    if ( !productId || !offset || !limit ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
     }
 
-    const review = await reviewService.getReview( productId, userId );
+    const review = await reviewService.getReview( productId, userId, offset, limit );
     return res.status(200).json({review: review})
 })
 
 const getPhotoReview = asyncWrap(async (req, res) => {
-    const { productId } = req.query;
+    const { productId } = req.params;
     const { userId } = req.body;
+    const { offset, limit } = req.query;
 
-    if ( !productId ) {
+    if ( !productId || !offset || !limit ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;
         throw err;
     }
 
-    const review = await reviewService.getPhotoReview( productId, userId );
+    const review = await reviewService.getPhotoReview( productId, userId, offset, limit );
     return res.status(200).json({review: review})
 })
 

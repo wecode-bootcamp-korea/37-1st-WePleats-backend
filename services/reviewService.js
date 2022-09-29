@@ -1,6 +1,6 @@
 const { reviewDao, productDao, orderDao } = require("../models")
 
-const getReview = async ( productId, userId ) => {
+const getReview = async ( productId, userId, offset, limit  ) => {
     const searchProduct = await productDao.getProductById( productId );
 
     if ( !searchProduct ) {
@@ -9,11 +9,11 @@ const getReview = async ( productId, userId ) => {
         throw err
     }
 
-    const review = await reviewDao.getReview( productId, userId )
+    const review = await reviewDao.getReview( productId, userId, +offset, +limit  )
     return review
 }
 
-const getPhotoReview = async ( productId, userId ) => {
+const getPhotoReview = async ( productId, userId, offset, limit ) => {
     const searchProduct = await productDao.getProductById( productId );
 
     if ( !searchProduct ) {
@@ -22,7 +22,7 @@ const getPhotoReview = async ( productId, userId ) => {
         throw err
     }
 
-    const review = await reviewDao.getPhotoReview( productId, userId )
+    const review = await reviewDao.getPhotoReview( productId, userId, +offset, +limit )
     return review
 }
 
