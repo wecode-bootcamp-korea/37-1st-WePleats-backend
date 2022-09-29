@@ -3,7 +3,7 @@ const appDataSource = require("./dataSource");
 const getBestCategory = async () => {
     try {
         return await appDataSource.query(
-            `select
+            `SELECT
                 pro.id,
                 pro.name,
                 pro.price,
@@ -13,16 +13,16 @@ const getBestCategory = async () => {
                 cate.id as category,
                 pro.new,
             JSON_ARRAYAGG(thumb.thumbnail_url) AS thumbnail_url
-            from (select
+            FROM (SELECT
                     product_id
-                    from orders group by product_id
-                    order by sum(quantity) desc limit 12) as sum
-            inner join products as pro on pro.id = sum.product_id
-            inner join colors on pro.color = colors.id
-            inner join categorys as cate on pro.category = cate.id
-            inner join main_categorys as main on main.id = cate.main_category
-            inner join thumbnail_images as thumb on thumb.product_id = pro.id
-            group by pro.id`
+                    FROM orders GROUP BY product_id
+                    ORDER BY sum(quantity) DESC limit 12) AS sum
+            INNER JOIN products AS pro ON pro.id = sum.product_id
+            INNER JOIN colors ON pro.color = colors.id
+            INNER JOIN categorys AS cate ON pro.category = cate.id
+            INNER JOIN main_categorys AS main ON main.id = cate.main_category
+            INNER JOIN thumbnail_images AS thumb ON thumb.product_id = pro.id
+            GROUP BY pro.id`
         )
     } catch (err) {
         const error = new Error(`INVALID_DATA_INPUT`);
