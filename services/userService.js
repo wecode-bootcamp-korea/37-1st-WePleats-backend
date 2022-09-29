@@ -23,7 +23,26 @@ const signIn = async (email, password) => {
     return accessToken;
 }
 
+const signUp = async (name, email, password, birthday, phone_number, address, gender, profile_image) => {
+    validate.validateEmail(email)
+    validate.validatePassword(password)
+
+    const hashPassword = await bcrypt.hash(password, 10)
+
+    return await userDao.createUser(
+        name,
+        email,
+        hashPassword,
+        birthday,
+        phone_number,
+        address,
+        gender,
+        profile_image
+    );
+}
+
 module.exports = {
-    signIn
+    signIn,
+    signUp
 }
 
