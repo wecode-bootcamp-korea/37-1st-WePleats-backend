@@ -1,6 +1,11 @@
 const { categoryService } = require('../services');
 const { asyncWrap } = require("../middleware/errorControl")
 
+const getNewProductsList = async (req, res) => {
+    const getNewProducts = await categoryService.getNewProductsList()
+    res.status(201).json({ getNewProducts })
+}
+    
 const getProductByCategory = async (req, res) => {
     const {category,id,color} = req.query
     if ((!category || !id )) {
@@ -20,5 +25,6 @@ const getBestCategory = asyncWrap(async (req, res) => {
 
 module.exports = {
     getBestCategory,
+    getNewProductsList,
     getProductByCategory
 }
