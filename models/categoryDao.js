@@ -1,8 +1,8 @@
 const { SimpleConsoleLogger } = require('typeorm')
-const dataSource = require('./dataSource')
+const appDataSource = require('./dataSource')
 
 const getProductByCategory = async (category, id, color) => {
-    const productData = await dataSource.query(`
+    const productData = await appDataSource.query(`
     SELECT
         products.id,
         products.name,
@@ -26,16 +26,17 @@ const getProductByCategory = async (category, id, color) => {
     IF(?='main', categorys.main_category=?,
         IF(?='sub', products.category=?, null)
     )
-    AND IF(?=?, products.color=1, products.id)
+    AND IF(?=?, products.color=?, products.id)
     `, [category, id, category, id, color, color, color]
     )
-
+    
     let productIds = []
     for(const product of productData) {
         productIds.push(product.id)
     }
-
-    const productThumbnailImages = await dataSource.query(`
+    console.log(productIds)
+    try{
+    const productThumbnailImages = await appDataSource.query(`
         SELECT
         id,
         product_id,
@@ -55,8 +56,14 @@ const getProductByCategory = async (category, id, color) => {
             };
         }
     }
-
     return productData
+
+} catch (err) {
+    const error = new Error("에러");
+    error.statusCode = 500;
+    throw error
+}
+
 }
 
 const getNewProductsList = async () => {
