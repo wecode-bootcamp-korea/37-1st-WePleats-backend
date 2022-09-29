@@ -4,6 +4,7 @@ const productDao = require("./productDao");
 const userDao = require('./userDao')
 const cartDao = require("./cartDao")
 const orderDao = require("./orderDao")
+const categoryDao = require("./categoryDao")
 
 
 module.exports = {
@@ -12,5 +13,6 @@ module.exports = {
     productDao,
     userDao,
     cartDao,
-    orderDao
+    orderDao,
+    categoryDao
 }
