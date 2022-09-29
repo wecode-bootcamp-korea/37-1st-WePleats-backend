@@ -87,6 +87,7 @@ const addCart = async ( userId, productId, quantity ) => {
             [ userId, productId, quantity ]
         )
     } catch (err) {
+        console.log(err)
         const error = new Error(`INVALID_DATA_INPUT`);
         err.statusCode = 500;
         throw error;

@@ -5,7 +5,7 @@ const getOrder = asyncWrap(async (req, res) => {
     const { userId } = req.body;
 
     const result = await orderService.getOrder( userId );
-
+    console.log(result)
     return res.status(200).json({ order: result })
 })
 

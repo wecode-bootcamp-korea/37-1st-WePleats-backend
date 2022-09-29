@@ -19,7 +19,7 @@ const signIn = async (email, password) => {
         throw err
     }
 
-    const accessToken = jwt.sign({ user_id: user.id }, process.env.JWT_KEY);
+    const accessToken = jwt.sign({ user_id: user.id }, process.env.TOKKENSECRET);
     return accessToken;
 }
 

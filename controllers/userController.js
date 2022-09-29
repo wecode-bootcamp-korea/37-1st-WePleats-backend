@@ -20,7 +20,7 @@ const signUp = (async (req, res) => {
         }
 
         await userService.signUp(name, email, password, birthday,phone_number, address, gender, profile_image)
-        return res.status(201).json({ message: '회원가입 완료!' })
+        return res.status(201).json({ message: 'signup success' })
     } catch(err) {
         console.log(err)
         return res.status(statusCode || 500).json({ message: err.message })
