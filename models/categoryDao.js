@@ -30,8 +30,6 @@ const getProductByCategory = async (category, id, color) => {
     `, [category, id, category, id, color, color, color]
     )
 
-    WHERE
-        if(?=?, products.category=3, )
     let productIds = []
     for(const product of productData) {
         productIds.push(product.id)
@@ -49,7 +47,6 @@ const getProductByCategory = async (category, id, color) => {
         `, [productIds]
     )
 
-    console.log(productData.length)
     for(let i=0; i<=productData.length-1; i++) {
         productData[i].thumbnail_url = []
         for(let j=0; j<=productThumbnailImages.length-1; j++) {

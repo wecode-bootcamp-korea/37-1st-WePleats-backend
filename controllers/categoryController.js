@@ -8,9 +8,6 @@ const getProductByCategory = async (req, res) => {
         throw error
     }
     const getProducts = await categoryService.getProductByCategory(category, id, color)
-	console.log("category",category)
-    console.log("id",id)
-    console.log("color",color)
 	res.status(201).json({ getProducts });
 }
 
