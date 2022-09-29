@@ -1,4 +1,5 @@
 const { categoryService } = require('../services');
+const { asyncWrap } = require("../middleware/errorControl")
 
 const getProductByCategory = async (req, res) => {
     const {category,id,color} = req.query
@@ -11,8 +12,13 @@ const getProductByCategory = async (req, res) => {
 	res.status(201).json({ getProducts });
 }
 
-
+const getBestCategory = asyncWrap(async (req, res) => {
+    const products = await categoryService.getBestCategory()
+    
+    return res.status(200).json({ category:products })
+})
 
 module.exports = {
+    getBestCategory,
     getProductByCategory
 }
