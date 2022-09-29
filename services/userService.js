@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const validate = require('../util/validate');
 
-const { userDao } = require('../models');
+const { userDao, cartDao } = require('../models');
 
 const signIn = async (email, password) => {
     validate.validateEmail(email)
@@ -41,8 +41,17 @@ const signUp = async (name, email, password, birthday, phone_number, address, ge
     );
 }
 
+const getNav = async ( userId ) => {
+    const user = await userDao.getUserById( userId );
+    const carts = await cartDao.getCartCount( userId );
+    user.carts = carts
+    const nav = {name:user.name, count:carts.count}
+    return nav
+}
+
 module.exports = {
     signIn,
-    signUp
+    signUp,
+    getNav
 }
 

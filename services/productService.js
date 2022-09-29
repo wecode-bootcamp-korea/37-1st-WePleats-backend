@@ -7,12 +7,12 @@ const getProduct = async ( productId ) => {
         err.statusCode = 406;
         throw err;
     }
-
-    const reviews = await reviewDao.getReviewByProduct( productId );
+    const { reviewCount } = await reviewDao.reviewCount( productId );
     const images = await productDao.getProductImage( productId );
     product.image_url = images
+    product.reviewCount = +reviewCount
 
-    return [ product, reviews ]
+    return product
 }
 
 module.exports = {

@@ -1,7 +1,6 @@
 const appDataSource = require("./dataSource");
 
 const getBestCategory = async () => {
-    try {
         return await appDataSource.query(
             `SELECT
                 pro.id,
@@ -24,11 +23,6 @@ const getBestCategory = async () => {
             INNER JOIN thumbnail_images AS thumb ON thumb.product_id = pro.id
             GROUP BY pro.id`
         )
-    } catch (err) {
-        const error = new Error(`INVALID_DATA_INPUT`);
-        error.statusCode = 500;
-        throw error;
-    }
 }
 
 

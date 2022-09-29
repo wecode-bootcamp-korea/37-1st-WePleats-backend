@@ -34,7 +34,7 @@ const getPhotoReview = asyncWrap(async (req, res) => {
 const postReview = asyncWrap(async (req, res) => {
     const { userId, productId, comment } = req.body;
     const image = req.file;
-
+    console.log(image)
     if ( !productId || !comment ) {
         const err = new Error("KEY_ERROR");
         err.statusCode = 400;

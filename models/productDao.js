@@ -1,5 +1,16 @@
 const appDataSource = require("./dataSource");
 
+
+const getProductById = async (productId) => {
+    const [ product ] = await appDataSource.query(
+        `SELECT
+            *
+        FROM products
+        WHERE id = ?`,
+        [productId]
+    )
+    return product
+}
 const getProductImage = async ( productId ) => {
     try {
         const image = await appDataSource.query(
@@ -35,13 +46,14 @@ const getProductDetail = async ( productId ) => {
             FROM products as pro
             INNER JOIN categorys as sub ON sub.id = pro.category
             INNER JOIN main_categorys as main ON main.id = sub.main_category
-            INNER JOIN sizes ON sizes.id = pro.size
+            INNER JOIN sizes ON sizes.id = pro.size_id
             INNER JOIN colors ON colors.id = pro.color
             WHERE pro.id = ?`,
             [ productId ]
         )
         return product
     } catch (err) {
+        console.log(err)
         const error = new Error(`INVALID_DATA_INPUT`);
         error.statusCode = 500;
         throw error;
@@ -49,6 +61,7 @@ const getProductDetail = async ( productId ) => {
 }
 
 module.exports = {
+    getProductById,
     getProductImage,
     getProductDetail
 }

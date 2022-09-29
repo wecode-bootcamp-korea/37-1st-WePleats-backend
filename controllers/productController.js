@@ -10,9 +10,9 @@ const getProduct = asyncWrap(async (req, res) => {
         throw err;
     }
 
-    const [ detail, review ] = await productService.getProduct( productId );
+    const detail = await productService.getProduct( productId );
     
-    return res.status(200).json({ product: detail, review: review})
+    return res.status(200).json({ product: detail })
 })
 
 module.exports = {

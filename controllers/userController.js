@@ -1,4 +1,6 @@
 const { userService } = require('../services');
+const { asyncWrap } = require("../middleware/errorControl")
+
 
 const signIn = async (req, res) => {
     const { email, password } = req.body
@@ -25,7 +27,14 @@ const signUp = (async (req, res) => {
     }
 })
 
+const getNav = asyncWrap(async (req, res) => {
+    const { userId } = req.body;
+    const nav = await userService.getNav( userId )
+    return res.status(200).json({nav})
+})
+
 module.exports = {
     signIn,
-    signUp
+    signUp,
+    getNav
 }

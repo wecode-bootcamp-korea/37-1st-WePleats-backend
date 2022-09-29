@@ -9,7 +9,7 @@ const getReview = async ( productId, userId, offset, limit  ) => {
         throw err
     }
 
-    const review = await reviewDao.getReview( productId, userId, +offset, +limit  )
+    const review = await reviewDao.getReview( productId, userId, +offset || 0, +limit || 5 )
     return review
 }
 
