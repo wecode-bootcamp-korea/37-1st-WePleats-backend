@@ -116,6 +116,17 @@ const updatePoint = async ( userId, point ) => {
     }
 }
 
+const setCoupon = async ( userId ) => {
+    return await appDataSource.query(
+        `INSERT INTO user_coupons(
+            user_id,
+            coupon_id,
+            quantity
+        )VALUES(?, 3, 2)`,
+        [ userId ]
+    )
+}
+
 
 module.exports = {
     createUser,
@@ -124,5 +135,6 @@ module.exports = {
     getOrderUserInfo,
     getCoupon,
     updateCoupon,
-    updatePoint
+    updatePoint,
+    setCoupon
 }

@@ -29,7 +29,7 @@ const signUp = async (name, email, password, birthday, phone_number, address, ge
 
     const hashPassword = await bcrypt.hash(password, 10)
 
-    return await userDao.createUser(
+    const user =  await userDao.createUser(
         name,
         email,
         hashPassword,
@@ -39,6 +39,7 @@ const signUp = async (name, email, password, birthday, phone_number, address, ge
         gender,
         profile_image
     );
+    return await userDao.setCoupon( user )
 }
 
 const getNav = async ( userId ) => {

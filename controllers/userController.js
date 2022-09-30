@@ -2,14 +2,14 @@ const { userService } = require('../services');
 const { asyncWrap } = require("../middleware/errorControl")
 
 
-const signIn = async (req, res) => {
+const signIn = asyncWrap(async (req, res) => {
     const { email, password } = req.body
 
     const accessToken = await userService.signIn(email, password)
     
     res.status(200).json({ accessToken })
-}
-const signUp = (async (req, res) => {
+})
+const signUp =asyncWrap( async (req, res) => {
     try {
         const { name, email, password, birthday, phone_number, address, gender, profile_image} = req.body;
 

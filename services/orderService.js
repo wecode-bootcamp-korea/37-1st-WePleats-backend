@@ -69,11 +69,12 @@ const createProductToOrder = async ( userId, productId, quantity ) => {
     }
   
     const { cart } = await cartDao.getCartExists( userId, productId );
-    if ( +cart ) {
-        await cartDao.updateCart( userId, productId, quantity );
+    console.log(cart)
+    if ( !+cart ) {
+        await cartDao.addCart( userId, productId, quantity );
     }
+    await cartDao.updateCart( userId, productId, quantity );
 
-    await cartDao.addCart( userId, productId, quantity );
 
     return await cartDao.updateCheck( userId, productId );
 }
